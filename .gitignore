@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.expo/
+web-build/
+*.tsbuildinfo
+.DS_Store
+tools/corpus/.cache/
+tools/corpus/out/
+apps/mobile/assets/corpus/*.db
+.env*
+!.env.example
