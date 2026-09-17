@@ -14,10 +14,10 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import { enrich } from './stages/enrich.ts';
-import { errorsOf, validate } from './stages/validate.ts';
-import { emit } from './stages/emit.ts';
-import type { RawEntry, RawTopic } from './types.ts';
+import { enrich } from './stages/enrich';
+import { errorsOf, validate } from './stages/validate';
+import { emit } from './stages/emit';
+import type { RawEntry, RawTopic } from './types';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '..');

@@ -4,9 +4,9 @@
  * in here testable without a simulator or a fake clock library.
  */
 
-import type { GameItem } from '../items/generators.js';
-import { Rating, ratingFromAnswer } from '../srs/fsrs.js';
-import type { EndCondition, Mode } from './modes.js';
+import type { GameItem } from '../items/generators';
+import { Rating, ratingFromAnswer } from '../srs/fsrs';
+import type { EndCondition, Mode } from './modes';
 
 export interface AnswerRecord {
   item: GameItem;

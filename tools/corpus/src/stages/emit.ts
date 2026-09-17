@@ -10,7 +10,7 @@ import { DatabaseSync } from 'node:sqlite';
 import { createHash } from 'node:crypto';
 import { readFileSync, mkdirSync, rmSync } from 'node:fs';
 import { dirname } from 'node:path';
-import type { BuiltEntry, RawTopic } from '../types.ts';
+import type { BuiltEntry, RawTopic } from '../types';
 
 export const DDL = `
 PRAGMA journal_mode = DELETE;

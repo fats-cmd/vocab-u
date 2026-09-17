@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Card } from '../src/srs/fsrs.js';
+import type { Card } from '../src/srs/fsrs';
 import {
   CardState,
   DEFAULT_PARAMS,
@@ -10,7 +10,7 @@ import {
   ratingFromAnswer,
   retrievability,
   schedule,
-} from '../src/srs/fsrs.js';
+} from '../src/srs/fsrs';
 
 const T0 = 1_700_000_000_000;
 const DAY = 86_400_000;

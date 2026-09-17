@@ -14,8 +14,8 @@ import {
   toDifficulty,
   toLogit,
   type TestItem,
-} from '../src/leveling/adaptive.js';
-import { bandProgress, cefrForDifficulty, isTopBand, nextBand } from '../src/leveling/cefr.js';
+} from '../src/leveling/adaptive';
+import { bandProgress, cefrForDifficulty, isTopBand, nextBand } from '../src/leveling/cefr';
 
 const pool: TestItem[] = Array.from({ length: 200 }, (_, i) => ({
   wordId: i + 1,

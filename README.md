@@ -3,8 +3,10 @@
 A free, open-source vocabulary app. No account, no server, no tracking, no paywall,
 no ads. It works on a plane.
 
-> **Status: early.** The domain core and the corpus pipeline are built and tested.
-> The app shell is next. See [the build order](docs/ARCHITECTURE.md#10-build-order).
+> **Status: milestone 1–2.** The domain core, the corpus pipeline and a playable
+> app are built and tested; the web build deploys. Still to come: the adaptive
+> level test screen, topic drill-down, collections, your own words, share cards
+> and CC0 artwork. See [the build order](docs/ARCHITECTURE.md#10-build-order).
 
 ## Why another vocabulary app
 
@@ -27,8 +29,16 @@ word feed with games attached — and then fixes the things that app gets wrong:
 
 ```bash
 pnpm install
-pnpm test           # 94 tests
-pnpm corpus:build   # compiles the word database
+pnpm test             # 119 tests
+pnpm corpus:build     # compiles the word database
+pnpm prepare:assets   # copies it into the app bundle
+pnpm mobile           # Expo dev server: press w for web, a/i for a device
+```
+
+To produce the deployable web build:
+
+```bash
+pnpm --filter @vocab-u/mobile export:web   # -> apps/mobile/dist, a static PWA
 ```
 
 The corpus build prints its own quality report and refuses to emit a database if

@@ -9,3 +9,5 @@ tools/corpus/out/
 apps/mobile/assets/corpus/*.db
 .env*
 !.env.example
+apps/mobile/dist/
+apps/mobile/.expo/

@@ -6,9 +6,9 @@
  * A missing question is recoverable; a broken question teaches the wrong answer.
  */
 
-import type { WordEntry, Word } from '../schema/types.js';
-import { type DistractorCandidate, selectDistractors } from './distractors.js';
-import { type Rng, shuffle } from './rng.js';
+import type { WordEntry, Word } from '../schema/types';
+import { type DistractorCandidate, selectDistractors } from './distractors';
+import { type Rng, shuffle } from './rng';
 
 export type GameType = 'guess-word' | 'meaning-match' | 'fill-gap' | 'match-synonym';
 

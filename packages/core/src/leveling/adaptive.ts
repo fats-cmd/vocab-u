@@ -10,8 +10,8 @@
  * the corpus lives on 0..1, so the two are converted at the boundary.
  */
 
-import { cefrForDifficulty, bandProgress } from './cefr.js';
-import type { Cefr } from '../schema/types.js';
+import { cefrForDifficulty, bandProgress } from './cefr';
+import type { Cefr } from '../schema/types';
 
 /** Logistic slope. 1.0 = standard Rasch. */
 const SLOPE = 1.0;

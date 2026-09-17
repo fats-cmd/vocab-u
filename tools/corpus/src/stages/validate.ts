@@ -6,7 +6,7 @@
  * error fails `pnpm corpus:build` and therefore fails CI.
  */
 
-import type { BuiltEntry, Problem } from '../types.ts';
+import type { BuiltEntry, Problem } from '../types';
 
 export const MAX_GLOSS = 90;
 

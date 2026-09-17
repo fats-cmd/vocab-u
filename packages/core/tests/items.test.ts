@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import type { Sense, Word, WordEntry } from '../src/schema/types.js';
+import type { Sense, Word, WordEntry } from '../src/schema/types';
 import {
   isInflectionOf,
   scoreCandidate,
   selectDistractors,
   type DistractorCandidate,
-} from '../src/items/distractors.js';
+} from '../src/items/distractors';
 import {
   blankExample,
   fillTheGap,
@@ -13,8 +13,8 @@ import {
   matchSynonym,
   meaningMatch,
   type GeneratorInput,
-} from '../src/items/generators.js';
-import { makeRng, shuffle } from '../src/items/rng.js';
+} from '../src/items/generators';
+import { makeRng, shuffle } from '../src/items/rng';
 
 const word = (id: number, lemma: string, over: Partial<Word> = {}): Word => ({
   id,

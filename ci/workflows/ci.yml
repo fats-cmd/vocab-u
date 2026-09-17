@@ -41,3 +41,10 @@ jobs:
           path: |
             tools/corpus/out/vocab.db
             tools/corpus/out/manifest.json
+
+      # Building the app is the only check that catches a bundler-level break
+      # (a bad import path, a missing asset extension) that typecheck cannot see.
+      - name: Bundle the app
+        run: |
+          pnpm prepare:assets
+          pnpm --filter @vocab-u/mobile export:web

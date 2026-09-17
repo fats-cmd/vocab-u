@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { contrastRatio, meetsAA, parseHex, relativeLuminance, surfacesSeparated } from '../src/design/contrast.js';
+import { contrastRatio, meetsAA, parseHex, relativeLuminance, surfacesSeparated } from '../src/design/contrast';
 
 describe('contrast', () => {
   it('computes the known extremes', () => {

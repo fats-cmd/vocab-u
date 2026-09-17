@@ -1,4 +1,4 @@
-import { CEFR_ORDER, type Cefr } from '../schema/types.js';
+import { CEFR_ORDER, type Cefr } from '../schema/types';
 
 /**
  * Upper bound of each band on the continuous 0..1 difficulty scale.

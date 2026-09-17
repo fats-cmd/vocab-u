@@ -9,8 +9,8 @@
  * process-of-elimination puzzle.
  */
 
-import type { Word } from '../schema/types.js';
-import { type Rng, shuffle } from './rng.js';
+import type { Word } from '../schema/types';
+import { type Rng, shuffle } from './rng';
 
 export interface DistractorCandidate {
   word: Word;

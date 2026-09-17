@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { MODES, endHeadline } from '../src/session/modes.js';
-import { answer, currentItem, startSession, summarise, tick, timeRemainingMs } from '../src/session/runner.js';
-import type { GameItem } from '../src/items/generators.js';
-import { Rating } from '../src/srs/fsrs.js';
+import { MODES, endHeadline } from '../src/session/modes';
+import { answer, currentItem, startSession, summarise, tick, timeRemainingMs } from '../src/session/runner';
+import type { GameItem } from '../src/items/generators';
+import { Rating } from '../src/srs/fsrs';
 
 const T0 = 1_700_000_000_000;
 

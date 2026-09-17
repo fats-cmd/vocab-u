@@ -8,7 +8,7 @@
  */
 
 import { cefrForDifficulty, type Register } from '@vocab-u/core';
-import type { BuiltEntry, RawEntry } from '../types.ts';
+import type { BuiltEntry, RawEntry } from '../types';
 
 export const WEIGHTS = {
   frequency: 0.65,
