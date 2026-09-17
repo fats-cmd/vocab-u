@@ -1,0 +1,156 @@
+[
+  {
+    "slug": "emotions",
+    "title": "Emotions",
+    "section": "about-us",
+    "scope": "Words for feelings and states of mind",
+    "ord": 1
+  },
+  {
+    "slug": "human-body",
+    "title": "Human body",
+    "section": "about-us",
+    "scope": "Anatomy, from everyday terms to clinical ones",
+    "ord": 2
+  },
+  {
+    "slug": "people",
+    "title": "People",
+    "section": "about-us",
+    "scope": "Words describing character and behaviour",
+    "ord": 3
+  },
+  {
+    "slug": "business",
+    "title": "Business",
+    "section": "world",
+    "scope": "The language of commerce and trade",
+    "ord": 1
+  },
+  {
+    "slug": "environment",
+    "title": "Environment",
+    "section": "world",
+    "scope": "Landscape, climate and the natural world",
+    "ord": 2
+  },
+  {
+    "slug": "travel",
+    "title": "Travel",
+    "section": "world",
+    "scope": "Journeys, places and moving through them",
+    "ord": 3
+  },
+  {
+    "slug": "science",
+    "title": "Science",
+    "section": "world",
+    "scope": "Terms from the physical and life sciences",
+    "ord": 4
+  },
+  {
+    "slug": "technology",
+    "title": "Technology",
+    "section": "world",
+    "scope": "Computing, engineering and the internet",
+    "ord": 5
+  },
+  {
+    "slug": "legal-terms",
+    "title": "Legal terms",
+    "section": "domain",
+    "scope": "Words used in law, courts and government",
+    "ord": 1
+  },
+  {
+    "slug": "medicine",
+    "title": "Medicine",
+    "section": "domain",
+    "scope": "Clinical vocabulary for patients and practitioners",
+    "ord": 2
+  },
+  {
+    "slug": "office-language",
+    "title": "Office language",
+    "section": "domain",
+    "scope": "The words meetings and email run on",
+    "ord": 3
+  },
+  {
+    "slug": "funny-words",
+    "title": "Funny words",
+    "section": "domain",
+    "scope": "English at its most absurd-sounding",
+    "ord": 4
+  },
+  {
+    "slug": "gre",
+    "title": "GRE",
+    "section": "test",
+    "scope": "High-frequency words on the GRE verbal sections",
+    "ord": 1
+  },
+  {
+    "slug": "sat",
+    "title": "SAT",
+    "section": "test",
+    "scope": "Words that recur on the SAT reading and writing sections",
+    "ord": 2
+  },
+  {
+    "slug": "spelling",
+    "title": "Spelling",
+    "section": "test",
+    "scope": "Words English spells nothing like it says them",
+    "ord": 3
+  },
+  {
+    "slug": "latin-root",
+    "title": "Latin root",
+    "section": "origin",
+    "scope": "English words built on Latin stems",
+    "ord": 1
+  },
+  {
+    "slug": "greek-root",
+    "title": "Greek root",
+    "section": "origin",
+    "scope": "English words built on Greek stems",
+    "ord": 2
+  },
+  {
+    "slug": "germanic-root",
+    "title": "Germanic root",
+    "section": "origin",
+    "scope": "English words inherited from Old English and Norse",
+    "ord": 3
+  },
+  {
+    "slug": "french-root",
+    "title": "French root",
+    "section": "origin",
+    "scope": "English words that arrived through Norman French",
+    "ord": 4
+  },
+  {
+    "slug": "spanish-words",
+    "title": "Spanish words",
+    "section": "language",
+    "scope": "Spanish borrowings now used in everyday English",
+    "ord": 1
+  },
+  {
+    "slug": "french-words",
+    "title": "French words",
+    "section": "language",
+    "scope": "French borrowings now used in everyday English",
+    "ord": 2
+  },
+  {
+    "slug": "german-words",
+    "title": "German words",
+    "section": "language",
+    "scope": "German borrowings now used in everyday English",
+    "ord": 3
+  }
+]

@@ -1,0 +1,1342 @@
+[
+  {
+    "lemma": "annual",
+    "pos": "adj",
+    "ipa": "ˈænjuəl",
+    "freqRank": 3200,
+    "senses": [
+      {
+        "gloss": "Happening once every year",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "The company publishes an annual report each spring.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "business",
+      "office-language",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "intimate",
+    "pos": "adj",
+    "ipa": "ˈɪntəmət",
+    "freqRank": 4100,
+    "senses": [
+      {
+        "gloss": "Closely familiar or deeply personal",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "They shared an intimate conversation by the fire.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "emotions",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "principality",
+    "pos": "n",
+    "ipa": "ˌprɪnsəˈpæləti",
+    "freqRank": 18000,
+    "senses": [
+      {
+        "gloss": "A small state ruled by a prince",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "Monaco is a principality on the Mediterranean coast.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "legal-terms",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "regnal",
+    "pos": "adj",
+    "ipa": "ˈrɛɡnəl",
+    "freqRank": 65000,
+    "senses": [
+      {
+        "gloss": "Belonging to a monarch's reign",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "Historians date the charter by its regnal year.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "legal-terms",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "transcendent",
+    "pos": "adj",
+    "ipa": "trænˈsɛndənt",
+    "freqRank": 25000,
+    "senses": [
+      {
+        "gloss": "Going far beyond ordinary limits",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The choir reached a transcendent moment in the final bar.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "emotions",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "incertitude",
+    "pos": "n",
+    "ipa": "ɪnˈsɝtəˌtud",
+    "freqRank": 60000,
+    "senses": [
+      {
+        "gloss": "A state of doubt or hesitation",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "Months of incertitude followed the announcement.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "emotions",
+      "french-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "imperious",
+    "pos": "adj",
+    "ipa": "ɪmˈpɪriəs",
+    "freqRank": 22000,
+    "senses": [
+      {
+        "gloss": "Commanding in an overbearing way",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "She dismissed the question with an imperious wave.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "styptic",
+    "pos": "adj",
+    "ipa": "ˈstɪptɪk",
+    "freqRank": 70000,
+    "senses": [
+      {
+        "gloss": "Able to stop bleeding",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "The barber kept a styptic pencil beside the razor.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "medicine",
+      "greek-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "negatron",
+    "pos": "n",
+    "ipa": "ˈnɛɡəˌtrɑn",
+    "freqRank": 75000,
+    "senses": [
+      {
+        "gloss": "An electron carrying a negative charge",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "Older physics papers call the electron a negatron.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "science",
+      "latin-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "sarmentum",
+    "pos": "n",
+    "ipa": "sɑrˈmɛntəm",
+    "freqRank": null,
+    "senses": [
+      {
+        "gloss": "A long slender runner of a plant",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "Each sarmentum of the vine reached for the trellis.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "science",
+      "latin-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "pleochroism",
+    "pos": "n",
+    "ipa": "pliˈɑkroʊˌɪzəm",
+    "freqRank": null,
+    "senses": [
+      {
+        "gloss": "A crystal showing different colours by angle",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "Geologists test for pleochroism under polarised light.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "science",
+      "greek-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "duchy",
+    "pos": "n",
+    "ipa": "ˈdʌtʃi",
+    "freqRank": 30000,
+    "senses": [
+      {
+        "gloss": "A territory ruled by a duke or duchess",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The duchy passed to his niece without dispute.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "legal-terms",
+      "french-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "realm",
+    "pos": "n",
+    "ipa": "ˈrɛlm",
+    "freqRank": 5200,
+    "senses": [
+      {
+        "gloss": "A kingdom, or a field of activity",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "That question lies outside the realm of physics.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "legal-terms",
+      "french-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "brave",
+    "pos": "adj",
+    "ipa": "ˈbreɪv",
+    "freqRank": 2400,
+    "senses": [
+      {
+        "gloss": "Willing to face danger",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "It was brave of her to speak first.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "valiant"
+    ],
+    "topics": [
+      "people",
+      "emotions",
+      "germanic-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "valiant",
+    "pos": "adj",
+    "ipa": "ˈvæljənt",
+    "freqRank": 14000,
+    "senses": [
+      {
+        "gloss": "Showing determined courage",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "They made a valiant attempt to reach the summit.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "brave"
+    ],
+    "topics": [
+      "people",
+      "french-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "quick",
+    "pos": "adj",
+    "ipa": "ˈkwɪk",
+    "freqRank": 900,
+    "senses": [
+      {
+        "gloss": "Moving or happening fast",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "He made a quick decision and left.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "rapid"
+    ],
+    "topics": [
+      "people",
+      "germanic-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "rapid",
+    "pos": "adj",
+    "ipa": "ˈræpɪd",
+    "freqRank": 3000,
+    "senses": [
+      {
+        "gloss": "Happening in a short time",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "The river narrows into a rapid channel.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "quick"
+    ],
+    "topics": [
+      "environment",
+      "latin-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "calm",
+    "pos": "adj",
+    "ipa": "ˈkɑm",
+    "freqRank": 2600,
+    "senses": [
+      {
+        "gloss": "Free from disturbance or agitation",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "The sea stayed calm all afternoon.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "serene"
+    ],
+    "topics": [
+      "emotions",
+      "environment"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "serene",
+    "pos": "adj",
+    "ipa": "səˈrin",
+    "freqRank": 9500,
+    "senses": [
+      {
+        "gloss": "Untroubled and peaceful",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "A serene expression never left her face.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "calm"
+    ],
+    "topics": [
+      "emotions",
+      "latin-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "lucid",
+    "pos": "adj",
+    "ipa": "ˈlusɪd",
+    "freqRank": 13000,
+    "senses": [
+      {
+        "gloss": "Clear and easy to follow",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "She gave a lucid account of the accident.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "cogent"
+    ],
+    "topics": [
+      "office-language",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "cogent",
+    "pos": "adj",
+    "ipa": "ˈkoʊdʒənt",
+    "freqRank": 28000,
+    "senses": [
+      {
+        "gloss": "Convincing because it is clearly reasoned",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The lawyer made a cogent case for dismissal.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "lucid"
+    ],
+    "topics": [
+      "legal-terms",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "austere",
+    "pos": "adj",
+    "ipa": "ɔˈstɪr",
+    "freqRank": 21000,
+    "senses": [
+      {
+        "gloss": "Severely plain or strict",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "They lived an austere life in the mountains.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "spartan"
+    ],
+    "topics": [
+      "people",
+      "french-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "spartan",
+    "pos": "adj",
+    "ipa": "ˈspɑrtən",
+    "freqRank": 26000,
+    "senses": [
+      {
+        "gloss": "Bare of comfort or decoration",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The room was spartan, with a bed and nothing else.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "austere"
+    ],
+    "topics": [
+      "people",
+      "greek-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "candid",
+    "pos": "adj",
+    "ipa": "ˈkændɪd",
+    "freqRank": 11000,
+    "senses": [
+      {
+        "gloss": "Honest and direct, even when awkward",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "He was candid about his own mistakes.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "frank"
+    ],
+    "topics": [
+      "people",
+      "latin-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "frank",
+    "pos": "adj",
+    "ipa": "ˈfræŋk",
+    "freqRank": 7000,
+    "senses": [
+      {
+        "gloss": "Open and plain in speech",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "To be frank, the plan will not work.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "candid"
+    ],
+    "topics": [
+      "people",
+      "germanic-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "obtuse",
+    "pos": "adj",
+    "ipa": "ɑbˈtus",
+    "freqRank": 24000,
+    "senses": [
+      {
+        "gloss": "Slow to understand, or blunt in shape",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "He was being deliberately obtuse about the deadline.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "intrepid",
+    "pos": "adj",
+    "ipa": "ɪnˈtrɛpɪd",
+    "freqRank": 19000,
+    "senses": [
+      {
+        "gloss": "Fearless in the face of difficulty",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "An intrepid crew sailed the northern passage.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "travel",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "verdant",
+    "pos": "adj",
+    "ipa": "ˈvɝdənt",
+    "freqRank": 23000,
+    "senses": [
+      {
+        "gloss": "Green with growing plants",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The valley turned verdant after the rains.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "environment",
+      "french-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "arduous",
+    "pos": "adj",
+    "ipa": "ˈɑrdʒuəs",
+    "freqRank": 17000,
+    "senses": [
+      {
+        "gloss": "Demanding great effort",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The climb was arduous but the view repaid it.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "travel",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "candour",
+    "pos": "n",
+    "ipa": "ˈkændɚ",
+    "freqRank": 29000,
+    "senses": [
+      {
+        "gloss": "Openness and honesty in speech",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "Her candour surprised the committee.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "acumen",
+    "pos": "n",
+    "ipa": "ˈækjəmən",
+    "freqRank": 27000,
+    "senses": [
+      {
+        "gloss": "Sharp judgement in a field",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "Her business acumen turned the company around.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "business",
+      "office-language",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "hubris",
+    "pos": "n",
+    "ipa": "ˈhjubrɪs",
+    "freqRank": 20000,
+    "senses": [
+      {
+        "gloss": "Excessive pride that invites downfall",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The collapse was a case study in hubris.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "greek-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "zeal",
+    "pos": "n",
+    "ipa": "ˈzil",
+    "freqRank": 12000,
+    "senses": [
+      {
+        "gloss": "Great energy for a cause",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "He pursued the reform with real zeal.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "fervour"
+    ],
+    "topics": [
+      "emotions",
+      "greek-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "fervour",
+    "pos": "n",
+    "ipa": "ˈfɝvɚ",
+    "freqRank": 25000,
+    "senses": [
+      {
+        "gloss": "Intense and passionate feeling",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The crowd sang with unusual fervour.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [
+      "zeal"
+    ],
+    "topics": [
+      "emotions",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "aptitude",
+    "pos": "n",
+    "ipa": "ˈæptəˌtud",
+    "freqRank": 15000,
+    "senses": [
+      {
+        "gloss": "A natural ability to learn something",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "She showed an early aptitude for languages.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "office-language",
+      "latin-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "respite",
+    "pos": "n",
+    "ipa": "ˈrɛspɪt",
+    "freqRank": 16000,
+    "senses": [
+      {
+        "gloss": "A short rest from something difficult",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The clouds gave a brief respite from the heat.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "emotions",
+      "french-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "quandary",
+    "pos": "n",
+    "ipa": "ˈkwɑndɚi",
+    "freqRank": 31000,
+    "senses": [
+      {
+        "gloss": "A difficult situation with no good option",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "The offer left him in a real quandary.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "emotions",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "vestige",
+    "pos": "n",
+    "ipa": "ˈvɛstɪdʒ",
+    "freqRank": 33000,
+    "senses": [
+      {
+        "gloss": "A small surviving trace of something gone",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "Only a vestige of the old wall remains.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "environment",
+      "latin-root",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "clavicle",
+    "pos": "n",
+    "ipa": "ˈklævɪkəl",
+    "freqRank": 40000,
+    "senses": [
+      {
+        "gloss": "The collarbone",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "She fractured her clavicle in the fall.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "human-body",
+      "medicine",
+      "latin-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "sternum",
+    "pos": "n",
+    "ipa": "ˈstɝnəm",
+    "freqRank": 38000,
+    "senses": [
+      {
+        "gloss": "The flat bone at the front of the chest",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "The sternum protects the heart and lungs.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "human-body",
+      "medicine",
+      "latin-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "larynx",
+    "pos": "n",
+    "ipa": "ˈlɛrɪŋks",
+    "freqRank": 36000,
+    "senses": [
+      {
+        "gloss": "The voice box in the throat",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "Inflammation of the larynx makes speech painful.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "human-body",
+      "medicine",
+      "greek-root"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "itinerary",
+    "pos": "n",
+    "ipa": "aɪˈtɪnəˌrɛri",
+    "freqRank": 14000,
+    "senses": [
+      {
+        "gloss": "A planned route or schedule of travel",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "Our itinerary put us in Lisbon by Thursday.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "travel",
+      "latin-root",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "algorithm",
+    "pos": "n",
+    "ipa": "ˈælɡəˌrɪðəm",
+    "freqRank": 6000,
+    "senses": [
+      {
+        "gloss": "A fixed procedure for solving a problem",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "The ranking algorithm was rewritten last year.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "technology",
+      "science",
+      "sat"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "bandwidth",
+    "pos": "n",
+    "ipa": "ˈbændˌwɪdθ",
+    "freqRank": 8000,
+    "senses": [
+      {
+        "gloss": "Capacity to carry data, or to take on work",
+        "register": "technical",
+        "examples": [
+          {
+            "text": "We simply do not have the bandwidth this quarter.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "technology",
+      "office-language"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "plaza",
+    "pos": "n",
+    "ipa": "ˈplɑzə",
+    "freqRank": 10000,
+    "senses": [
+      {
+        "gloss": "An open public square in a town",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "They met in the plaza outside the cathedral.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "travel",
+      "spanish-words"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "bravado",
+    "pos": "n",
+    "ipa": "brəˈvɑdoʊ",
+    "freqRank": 26000,
+    "senses": [
+      {
+        "gloss": "A show of boldness meant to impress",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "His bravado faded once the door closed.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "spanish-words",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "rendezvous",
+    "pos": "n",
+    "ipa": "ˈrɑndeɪˌvu",
+    "freqRank": 18500,
+    "senses": [
+      {
+        "gloss": "An arranged meeting at a set place",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "They kept the rendezvous despite the storm.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "travel",
+      "french-words"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "zeitgeist",
+    "pos": "n",
+    "ipa": "ˈzaɪtˌɡaɪst",
+    "freqRank": 32000,
+    "senses": [
+      {
+        "gloss": "The mood and ideas of a period",
+        "register": "formal",
+        "examples": [
+          {
+            "text": "The film captured the zeitgeist of the decade.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "people",
+      "german-words",
+      "gre"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "wanderlust",
+    "pos": "n",
+    "ipa": "ˈwɑndɚˌlʌst",
+    "freqRank": 34000,
+    "senses": [
+      {
+        "gloss": "A strong desire to travel",
+        "register": "neutral",
+        "examples": [
+          {
+            "text": "A summer of wanderlust took her across Asia.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "travel",
+      "german-words"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "kerfuffle",
+    "pos": "n",
+    "ipa": "kɚˈfʌfəl",
+    "freqRank": 45000,
+    "senses": [
+      {
+        "gloss": "A noisy fuss over something minor",
+        "register": "informal",
+        "examples": [
+          {
+            "text": "There was a kerfuffle over the seating plan.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "funny-words",
+      "people"
+    ],
+    "source": "curated"
+  },
+  {
+    "lemma": "brouhaha",
+    "pos": "n",
+    "ipa": "ˈbruhɑˌhɑ",
+    "freqRank": 48000,
+    "senses": [
+      {
+        "gloss": "An overexcited public commotion",
+        "register": "informal",
+        "examples": [
+          {
+            "text": "The whole brouhaha was forgotten within a week.",
+            "source": "curated",
+            "reviewed": true
+          }
+        ]
+      }
+    ],
+    "synonyms": [],
+    "topics": [
+      "funny-words",
+      "french-words"
+    ],
+    "source": "curated"
+  }
+]

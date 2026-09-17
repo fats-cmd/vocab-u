@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: Test
+        run: pnpm test
+
+      # The corpus build IS a test: validation is a gate, so a content defect
+      # (a stressless transcription, an unreviewed example, a one-way synonym)
+      # fails the build and therefore fails CI.
+      - name: Build corpus
+        run: pnpm corpus:build
+
+      - name: Upload corpus
+        uses: actions/upload-artifact@v4
+        with:
+          name: vocab-db
+          path: |
+            tools/corpus/out/vocab.db
+            tools/corpus/out/manifest.json

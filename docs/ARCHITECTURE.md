@@ -194,11 +194,24 @@ without a server: the data to fit the model is already on the device.
 decision uses. CEFR is a *label over bands of it*, for display only.
 
 ```
-difficulty = 0.55·zipf_inv(freq_rank)      -- rarer  → harder
-           + 0.20·morph_complexity          -- affixes, syllables, length
-           + 0.15·sense_count_inv           -- monosemous technical terms → harder
+difficulty = 0.65·rarity(freq_rank)        -- rarer   → harder
+           + 0.25·morph_complexity          -- syllables and length
            + 0.10·register_penalty          -- archaic/technical → harder
+           − 0.10·polysemy_discount         -- many senses → met more often
 ```
+
+`rarity` is log2 over rank, anchored at rank 250 and 160 000, so it rises steeply
+at the common end. A plain `log(rank)/log(max)` puts a rank-900 word at the middle
+of the scale, which is exactly how an advanced learner ends up being asked to
+define *annual*.
+
+Polysemy is a **discount, not a penalty**. One sense *in our corpus* is not
+evidence that a word is monosemous in English — usually it just means we have not
+imported the others yet, so a single-sense entry sits at neutral rather than at
+maximum difficulty. Getting this backwards compresses the whole corpus into two
+bands.
+
+Implementation and calibration tests: `tools/corpus/src/stages/enrich.ts`.
 
 This is the fix for the reference app's worst product bug — being rated *Advanced* and
 then served *annual*. Item selection is `|item.difficulty − learner.theta| < ε`, always.
