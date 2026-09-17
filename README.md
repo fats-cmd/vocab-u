@@ -54,6 +54,16 @@ any validation rule fails. Try breaking one — change an IPA transcription in
 | `apps/mobile` | The Expo app (iOS, Android and web from one codebase). |
 | `docs/` | [Architecture](docs/ARCHITECTURE.md) · [Reference teardown](docs/REFERENCE_TEARDOWN.md) |
 
+## CI and deployment
+
+The workflows are in [`ci/workflows/`](ci/README.md) with a one-line command to
+move them into `.github/workflows/`. They are parked there only because the token
+that created this branch lacks GitHub's `workflow` scope.
+
+Deployment is a static export to GitHub Pages — no server, no database, no bill.
+Android builds produce an APK artifact per tag; F-Droid packaging and the iOS
+build come in milestone 5.
+
 ## Contributing
 
 Three ways in, in rough order of how easy they are to start:
