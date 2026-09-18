@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { Button, EmptyState, Text } from '@/design/components';
 import { useTheme } from '@/design/theme';
-import { MIN_TAP } from '@/design/tokens';
 import { addOwnWord, deleteOwnWord, listOwnWords, type OwnWord } from '@/data/userRepo';
 
 /**
@@ -17,7 +16,6 @@ import { addOwnWord, deleteOwnWord, listOwnWords, type OwnWord } from '@/data/us
  * prop, so the other version cannot be built.
  */
 export default function OwnWordsScreen() {
-  const t = useTheme();
   const router = useRouter();
   const [words, setWords] = useState<OwnWord[]>([]);
   const [adding, setAdding] = useState(false);
@@ -59,26 +57,18 @@ export default function OwnWordsScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: t.space.md,
-          paddingHorizontal: t.space.gutter,
-          paddingVertical: t.space.sm,
-        }}
-      >
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
+      <View className="flex-row items-center gap-md px-gutter py-sm">
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Back"
           onPress={() => router.back()}
           hitSlop={12}
-          style={{ minWidth: MIN_TAP, minHeight: MIN_TAP, justifyContent: 'center' }}
+          className="min-h-tap min-w-tap justify-center"
         >
           <Text variant="headline">←</Text>
         </Pressable>
-        <Text variant="headline" display style={{ flex: 1 }}>
+        <Text variant="headline" display className="flex-1">
           Your own words
         </Text>
       </View>
@@ -86,9 +76,9 @@ export default function OwnWordsScreen() {
       <FlatList
         data={words}
         keyExtractor={(item) => String(item.id)}
-        contentContainerStyle={{ padding: t.space.gutter, gap: t.space.sm }}
+        contentContainerClassName="gap-sm p-gutter"
         ListHeaderComponent={
-          <Text variant="caption" tone="muted" style={{ paddingBottom: t.space.md }}>
+          <Text variant="caption" tone="muted" className="pb-md">
             {words.length} word{words.length === 1 ? '' : 's'} · stored only on this device
           </Text>
         }
@@ -97,12 +87,7 @@ export default function OwnWordsScreen() {
             accessibilityRole="button"
             accessibilityLabel={`${item.lemma}. ${item.gloss}. Long press to delete.`}
             onLongPress={() => remove(item)}
-            style={{
-              backgroundColor: t.colors.surface1,
-              borderRadius: t.radius.md,
-              padding: t.space.lg,
-              gap: t.space.xs,
-            }}
+            className="gap-xs rounded-md bg-surface-1 p-lg"
           >
             <Text variant="body" bold>
               {item.lemma}
@@ -120,7 +105,7 @@ export default function OwnWordsScreen() {
         )}
       />
 
-      <View style={{ padding: t.space.gutter }}>
+      <View className="p-gutter">
         <Button label="Add a word" onPress={() => setAdding(true)} />
       </View>
     </SafeAreaView>
@@ -143,23 +128,18 @@ function AddForm({ onDone, onCancel }: { onDone: () => void; onCancel: () => voi
     onDone();
   };
 
-  const field = {
-    backgroundColor: t.colors.surface1,
-    borderRadius: t.radius.md,
-    padding: t.space.lg,
-    minHeight: MIN_TAP,
-    color: t.colors.textPrimary,
-    fontSize: t.type.body.fontSize,
-  } as const;
+  // TextInput cannot take every style from a class (placeholder colour and the
+  // text colour itself are props), so this one keeps the theme object.
+  const field = 'min-h-tap rounded-md bg-surface-1 p-lg text-body text-ink';
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top', 'bottom']}>
-      <View style={{ flex: 1, padding: t.space.gutter, gap: t.space.lg }}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top', 'bottom']}>
+      <View className="flex-1 gap-lg p-gutter">
         <Text variant="title" display>
           Add a word
         </Text>
 
-        <View style={{ gap: t.space.sm }}>
+        <View className="gap-sm">
           <Text variant="label" tone="secondary">
             Word
           </Text>
@@ -170,12 +150,12 @@ function AddForm({ onDone, onCancel }: { onDone: () => void; onCancel: () => voi
             autoCapitalize="none"
             placeholder="e.g. petrichor"
             placeholderTextColor={t.colors.textMuted}
-            style={field}
+            className={field}
             accessibilityLabel="Word"
           />
         </View>
 
-        <View style={{ gap: t.space.sm }}>
+        <View className="gap-sm">
           <Text variant="label" tone="secondary">
             What it means
           </Text>
@@ -184,12 +164,12 @@ function AddForm({ onDone, onCancel }: { onDone: () => void; onCancel: () => voi
             onChangeText={setGloss}
             placeholder="The smell of rain on dry earth"
             placeholderTextColor={t.colors.textMuted}
-            style={field}
+            className={field}
             accessibilityLabel="What it means"
           />
         </View>
 
-        <View style={{ gap: t.space.sm }}>
+        <View className="gap-sm">
           <Text variant="label" tone="secondary">
             Note (optional)
           </Text>
@@ -198,7 +178,7 @@ function AddForm({ onDone, onCancel }: { onDone: () => void; onCancel: () => voi
             onChangeText={setNote}
             placeholder="Where you ran into it"
             placeholderTextColor={t.colors.textMuted}
-            style={field}
+            className={field}
             accessibilityLabel="Note"
           />
         </View>
@@ -208,7 +188,7 @@ function AddForm({ onDone, onCancel }: { onDone: () => void; onCancel: () => voi
         </Text>
       </View>
 
-      <View style={{ padding: t.space.gutter, gap: t.space.md }}>
+      <View className="gap-md p-gutter">
         <Button label="Save" onPress={() => void save()} disabled={!canSave} loading={saving} />
         <Button label="Cancel" kind="ghost" onPress={onCancel} />
       </View>

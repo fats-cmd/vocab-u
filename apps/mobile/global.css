@@ -1,0 +1,62 @@
+/*
+ * GENERATED FILE - do not edit.
+ * Run `pnpm --filter @vocab-u/mobile theme:css` after changing
+ * src/design/theme.json. CI regenerates it and fails if the result differs.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Dark is the default: this app is dark-first, and a light flash on launch is
+     worse than the reverse. */
+  :root {
+    --c-bg: #0F0F0F;
+    --c-surface1: #262626;
+    --c-surface2: #363636;
+    --c-surface3: #464646;
+    --c-text-primary: #FFFFFF;
+    --c-text-secondary: #B8B8B8;
+    --c-text-muted: #A0A0A0;
+    --c-accent: #7FC8C0;
+    --c-accent-ink: #06201E;
+    --c-success: #7FC888;
+    --c-success-ink: #052009;
+    --c-danger: #E8877A;
+    --c-danger-ink: #2A0B06;
+    --c-warning: #E8C87A;
+    --c-day-done: #7FC8C0;
+    --c-day-missed: #6B4A45;
+    --c-day-today: #FFFFFF;
+    --c-day-future: #2F2F2F;
+    --c-border: #3D3D3D;
+    --c-scrim-top: rgba(15,15,15,0.15);
+    --c-scrim-bottom: rgba(15,15,15,0.88);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root {
+      --c-bg: #FFFFFF;
+      --c-surface1: #E5E5E5;
+      --c-surface2: #CBCBCB;
+      --c-surface3: #B4B4B4;
+      --c-text-primary: #121212;
+      --c-text-secondary: #3F3F3F;
+      --c-text-muted: #555555;
+      --c-accent: #1F6F67;
+      --c-accent-ink: #FFFFFF;
+      --c-success: #1B6B29;
+      --c-success-ink: #FFFFFF;
+      --c-danger: #A32718;
+      --c-danger-ink: #FFFFFF;
+      --c-warning: #7A5A00;
+      --c-day-done: #1F6F67;
+      --c-day-missed: #D9A79F;
+      --c-day-today: #121212;
+      --c-day-future: #E3E3E3;
+      --c-border: #B4B4B4;
+      --c-scrim-top: rgba(0,0,0,0.10);
+      --c-scrim-bottom: rgba(0,0,0,0.72);
+    }
+  }
+}

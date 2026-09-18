@@ -5,8 +5,6 @@ import * as Speech from 'expo-speech';
 import type { WordEntry } from '@vocab-u/core';
 import { currentStreak, dayKey, weekStates, weekdayIndex } from '@vocab-u/core';
 import { DayDot, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
-import { MIN_TAP } from '@/design/tokens';
 import { entriesNearDifficulty } from '@/data/corpusRepo';
 import { activeDayKeys, markSeen, savedIds, toggleSaved } from '@/data/userRepo';
 import { useLearner } from '@/features/progress/learnerStore';
@@ -17,13 +15,12 @@ const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
  * The feed — the root of the app, as in the reference.
  *
  * Words are drawn from the learner's measured band rather than at random, and
- * every card is marked seen so the topic catalogue and Progress tab have
- * something to show. There is no photography behind the text yet: rather than
- * ship white type on bare images, the feed uses surface tokens until CC0 art
- * lands, at which point `PhotoBackdrop` supplies the mandatory scrim.
+ * every card is marked seen so the catalogue and Progress have something to
+ * show. There is no photography behind the text yet: rather than ship white type
+ * on bare images, the feed uses surface tokens until CC0 art lands, at which
+ * point `PhotoBackdrop` supplies the mandatory scrim.
  */
 export default function FeedScreen() {
-  const t = useTheme();
   const difficulty = useLearner((s) => s.difficulty);
   const [entries, setEntries] = useState<WordEntry[]>([]);
   const [favourites, setFavourites] = useState<Set<number>>(new Set());
@@ -67,21 +64,13 @@ export default function FeedScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
       {/* Streak strip. Future days are visibly not missed days. */}
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: t.space.sm,
-          paddingHorizontal: t.space.gutter,
-          paddingBottom: t.space.md,
-        }}
-      >
+      <View className="flex-row items-center gap-sm px-gutter pb-md">
         <Text variant="headline" display tone="accent">
           {streak}
         </Text>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View className="flex-1 flex-row justify-between">
           {week.map((state, i) => (
             <DayDot key={DAYS[i]} label={DAYS[i]!} state={state} />
           ))}
@@ -119,23 +108,14 @@ function WordCard({
   favourite: boolean;
   onFavourite: () => void;
 }) {
-  const t = useTheme();
   const { word, sense, examples, synonyms } = entry;
 
   return (
     <View
-      style={{
-        height,
-        marginHorizontal: t.space.gutter,
-        marginBottom: t.space.lg,
-        padding: t.space.xl,
-        borderRadius: t.radius.xl,
-        backgroundColor: t.colors.surface1,
-        justifyContent: 'center',
-        gap: t.space.lg,
-      }}
+      style={{ height }}
+      className="mx-gutter mb-lg justify-center gap-lg rounded-xl bg-surface-1 p-xl"
     >
-      <View style={{ gap: t.space.sm }}>
+      <View className="gap-sm">
         <Text variant="display1" display center>
           {word.lemma}
         </Text>
@@ -144,14 +124,14 @@ function WordCard({
           accessibilityRole="button"
           accessibilityLabel={`Pronounce ${word.lemma}`}
           onPress={() => Speech.speak(word.lemma, { language: 'en-US' })}
-          style={{ minHeight: MIN_TAP, justifyContent: 'center' }}
+          className="min-h-tap justify-center"
         >
           <Text variant="label" tone="secondary" center>
             {word.ipa ?? ''} 🔊
           </Text>
         </Pressable>
 
-        <Text variant="headline" center tone="secondary">
+        <Text variant="headline" tone="secondary" center>
           ({word.pos}.) {sense.gloss}
         </Text>
       </View>
@@ -163,36 +143,28 @@ function WordCard({
       ) : null}
 
       {synonyms.length > 0 ? (
-        <View style={{ flexDirection: 'row', gap: t.space.sm, justifyContent: 'center' }}>
+        <View className="flex-row justify-center gap-sm">
           {synonyms.map((s) => (
-            <View
-              key={s}
-              style={{
-                paddingHorizontal: t.space.md,
-                paddingVertical: t.space.xs,
-                borderRadius: t.radius.pill,
-                backgroundColor: t.colors.surface3,
-              }}
-            >
+            <View key={s} className="rounded-pill bg-surface-3 px-md py-xs">
               <Text variant="caption">{s}</Text>
             </View>
           ))}
         </View>
       ) : null}
 
-      <View style={{ flexDirection: 'row', justifyContent: 'center', gap: t.space.xl }}>
+      <View className="flex-row justify-center gap-xl">
         <Pressable
           accessibilityRole="button"
           accessibilityLabel={favourite ? 'Remove from favourites' : 'Add to favourites'}
           accessibilityState={{ selected: favourite }}
           onPress={onFavourite}
-          style={{ minWidth: MIN_TAP, minHeight: MIN_TAP, alignItems: 'center', justifyContent: 'center' }}
+          className="min-h-tap min-w-tap items-center justify-center"
         >
           <Text variant="title" tone={favourite ? 'accent' : 'muted'}>
             {favourite ? '♥' : '♡'}
           </Text>
         </Pressable>
-        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+        <View className="items-center justify-center">
           <Text variant="caption" tone="muted">
             {word.cefr}
           </Text>

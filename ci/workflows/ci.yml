@@ -22,6 +22,14 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      # global.css is generated from src/design/theme.json. If it is stale, a
+      # NativeWind class and useTheme() disagree about a colour, and the contrast
+      # tests silently stop guarding what ships.
+      - name: Theme CSS is up to date
+        run: |
+          pnpm --filter @vocab-u/mobile theme:css
+          git diff --exit-code apps/mobile/global.css
+
       - name: Typecheck
         run: pnpm typecheck
 

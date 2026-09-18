@@ -3,7 +3,6 @@ import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { EmptyState, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
 import { entriesByIds } from '@/data/corpusRepo';
 import { savedIds, seenIds } from '@/data/userRepo';
 import { useWordList } from '@/features/words/useWordList';
@@ -50,7 +49,6 @@ const CONFIG: Record<
 };
 
 export default function ListScreen() {
-  const t = useTheme();
   const router = useRouter();
   const { kind } = useLocalSearchParams<{ kind: string }>();
   const config = CONFIG[(kind as ListKind) in CONFIG ? (kind as ListKind) : 'favourites'];
@@ -69,14 +67,14 @@ export default function ListScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
       <ScreenHeader title={config.title} onBack={() => router.back()} />
       <FlatList
         data={entries}
         keyExtractor={(item) => String(item.word.id)}
-        contentContainerStyle={{ padding: t.space.gutter, gap: t.space.sm }}
+        contentContainerClassName="gap-sm p-gutter"
         ListHeaderComponent={
-          <Text variant="caption" tone="muted" style={{ paddingBottom: t.space.md }}>
+          <Text variant="caption" tone="muted" className="pb-md">
             {entries.length} word{entries.length === 1 ? '' : 's'}
           </Text>
         }

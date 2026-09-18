@@ -3,14 +3,12 @@ import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Button, EmptyState, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
 import { entriesInTopic, topicById, type TopicWithCount } from '@/data/corpusRepo';
 import { useWordList } from '@/features/words/useWordList';
 import { WordListRow } from '@/features/words/WordListRow';
 import { ScreenHeader } from '@/features/words/ScreenHeader';
 
 export default function TopicScreen() {
-  const t = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const topicId = Number(id);
@@ -36,15 +34,15 @@ export default function TopicScreen() {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
       <ScreenHeader title={topic?.title ?? 'Topic'} onBack={() => router.back()} />
 
       <FlatList
         data={entries}
         keyExtractor={(item) => String(item.word.id)}
-        contentContainerStyle={{ padding: t.space.gutter, gap: t.space.sm }}
+        contentContainerClassName="gap-sm p-gutter"
         ListHeaderComponent={
-          <View style={{ gap: t.space.sm, paddingBottom: t.space.lg }}>
+          <View className="gap-sm pb-lg">
             {topic ? (
               <Text variant="body" tone="secondary">
                 {topic.scope}
@@ -66,7 +64,7 @@ export default function TopicScreen() {
         )}
       />
 
-      <View style={{ padding: t.space.gutter }}>
+      <View className="p-gutter">
         <Button label="Practise this topic" onPress={() => router.push('/(tabs)/practice')} />
       </View>
     </SafeAreaView>

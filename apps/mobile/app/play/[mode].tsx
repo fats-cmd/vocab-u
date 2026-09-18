@@ -1,17 +1,14 @@
 import { useEffect, useRef } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { MODES, type ModeId, currentItem, timeRemainingMs } from '@vocab-u/core';
 import { Button, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
 import { useSession } from '@/features/practice/sessionStore';
 import { useLearner } from '@/features/progress/learnerStore';
-import { MIN_TAP } from '@/design/tokens';
 
 export default function PlayScreen() {
-  const t = useTheme();
   const router = useRouter();
   const params = useLocalSearchParams<{ mode: string }>();
   const modeId = (params.mode ?? 'sprint') as ModeId;
@@ -45,18 +42,18 @@ export default function PlayScreen() {
 
   if (loading || (!state && !error)) {
     return (
-      <Screen>
+      <SafeAreaView className="flex-1 justify-center bg-bg">
         <Text variant="body" tone="secondary" center>
           Building your round…
         </Text>
-      </Screen>
+      </SafeAreaView>
     );
   }
 
   if (error || !state) {
     return (
-      <Screen>
-        <View style={{ gap: t.space.lg, paddingHorizontal: t.space.gutter }}>
+      <SafeAreaView className="flex-1 justify-center bg-bg">
+        <View className="gap-lg px-gutter">
           <Text variant="title" display center>
             Not enough words yet
           </Text>
@@ -65,15 +62,16 @@ export default function PlayScreen() {
           </Text>
           <Button label="Back" kind="secondary" onPress={() => router.back()} />
         </View>
-      </Screen>
+      </SafeAreaView>
     );
   }
 
   const item = currentItem(state);
-  if (!item) return <Screen />;
+  if (!item) return <SafeAreaView className="flex-1 bg-bg" />;
 
   const remaining = timeRemainingMs(state, Date.now());
   const answered = state.answers.length;
+  const lowTime = remaining !== null && remaining < 10_000;
 
   const onChoose = (index: number) => {
     void Haptics.selectionAsync();
@@ -81,15 +79,15 @@ export default function PlayScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top', 'bottom']}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top', 'bottom']}>
       {/* Status bar: progress carries a number, not just a bar. */}
-      <View style={[styles.status, { padding: t.space.gutter, gap: t.space.lg }]}>
+      <View className="flex-row items-center gap-lg p-gutter">
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Quit round"
           onPress={() => router.back()}
           hitSlop={12}
-          style={{ minWidth: MIN_TAP, minHeight: MIN_TAP, justifyContent: 'center' }}
+          className="min-h-tap min-w-tap justify-center"
         >
           <Text variant="headline">✕</Text>
         </Pressable>
@@ -106,23 +104,15 @@ export default function PlayScreen() {
         ) : null}
 
         {remaining !== null ? (
-          <Text variant="label" tone={remaining < 10_000 ? 'danger' : 'secondary'} bold>
+          <Text variant="label" tone={lowTime ? 'danger' : 'secondary'} bold>
             {Math.ceil(remaining / 1000)}s
           </Text>
         ) : null}
       </View>
 
       {/* Prompt and options share the height; no dead third of the screen. */}
-      <View style={[styles.prompt, { paddingHorizontal: t.space.gutter }]}>
-        <View
-          style={{
-            backgroundColor: t.colors.surface1,
-            borderRadius: t.radius.lg,
-            padding: t.space.xl,
-            width: '100%',
-            gap: t.space.sm,
-          }}
-        >
+      <View className="flex-[4] items-center justify-center px-gutter">
+        <View className="w-full gap-sm rounded-lg bg-surface-1 p-xl">
           <Text variant="caption" tone="muted">
             {promptLabel(item.type)}
           </Text>
@@ -137,23 +127,16 @@ export default function PlayScreen() {
         </View>
       </View>
 
-      <View style={[styles.options, { paddingHorizontal: t.space.gutter, gap: t.space.md }]}>
+      <View className="flex-[5] justify-center gap-md px-gutter">
         {item.options.map((option, index) => (
           <Pressable
             key={`${option}-${index}`}
             accessibilityRole="button"
             accessibilityLabel={option}
             onPress={() => onChoose(index)}
-            style={({ pressed }) => ({
-              minHeight: MIN_TAP + 12,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: t.space.lg,
-              borderRadius: t.radius.md,
-              // Elevation is a surface step, never a shadow: a black drop shadow
-              // on a dark background reads as a smudge.
-              backgroundColor: pressed ? t.colors.surface3 : t.colors.surface2,
-            })}
+            // Elevation is a surface step, never a shadow: a black drop shadow on
+            // a dark background reads as a smudge.
+            className="min-h-[60px] items-center justify-center rounded-md bg-surface-2 px-lg active:bg-surface-3"
           >
             <Text variant="body" bold center>
               {option}
@@ -179,21 +162,3 @@ function promptLabel(type: string): string {
       return '';
   }
 }
-
-function Screen({ children }: { children?: React.ReactNode }) {
-  const t = useTheme();
-  return (
-    <SafeAreaView
-      style={{ flex: 1, backgroundColor: t.colors.bg, justifyContent: 'center' }}
-      edges={['top', 'bottom']}
-    >
-      {children}
-    </SafeAreaView>
-  );
-}
-
-const styles = StyleSheet.create({
-  status: { flexDirection: 'row', alignItems: 'center' },
-  prompt: { flex: 4, justifyContent: 'center', alignItems: 'center' },
-  options: { flex: 5, justifyContent: 'center' },
-});

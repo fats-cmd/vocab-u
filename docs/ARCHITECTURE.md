@@ -322,6 +322,12 @@ Rules that keep it contributable:
 - **No business rules in components.** Scoring, scheduling and selection live in `core`.
 - **Every screen renders from a store**, so screens are testable with a seeded store.
 - **Design tokens only** — no literal colours or pixel values in feature code.
+  Styling is NativeWind classes (`bg-surface-1`, `p-lg`, `rounded-pill`), and the
+  values behind them come from `src/design/theme.json` — the same file
+  `useTheme()` reads. `global.css` is generated from it, and CI fails if that
+  file is stale, so a class and a style object cannot disagree about what
+  `surface-1` means. `useTheme()` remains for the cases a class cannot reach:
+  React Navigation options, `placeholderTextColor`, and animated values.
 
 ### 6.1 Navigation
 

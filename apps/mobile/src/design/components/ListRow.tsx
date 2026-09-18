@@ -1,12 +1,10 @@
 import { Pressable, View } from 'react-native';
 import { Text } from './Text';
-import { useTheme } from '../theme';
-import { MIN_TAP } from '../tokens';
 
 /**
- * `kind` decides the affordance, so a row cannot end up looking navigable while
- * behaving like an action, or lose its chevron the way the reference app's
- * "Share Vocabulary" row does among nine identical siblings.
+ * `kind` decides the affordance, so a row cannot look navigable while behaving
+ * like an action, or lose its chevron the way the reference app's "Share
+ * Vocabulary" row does among nine identical siblings.
  */
 export type RowKind = 'navigate' | 'action' | 'toggle' | 'value';
 
@@ -23,8 +21,7 @@ export interface ListRowProps {
 }
 
 export function ListRow({ label, kind, onPress, icon, value, detail, first, last }: ListRowProps) {
-  const t = useTheme();
-  const trailing = kind === 'navigate' ? '›' : kind === 'action' ? '↗' : value ?? '';
+  const trailing = kind === 'navigate' ? '›' : kind === 'action' ? '↗' : (value ?? '');
 
   return (
     <Pressable
@@ -32,28 +29,16 @@ export function ListRow({ label, kind, onPress, icon, value, detail, first, last
       accessibilityLabel={label}
       accessibilityHint={detail}
       onPress={onPress}
-      style={({ pressed }) => ({
-        minHeight: MIN_TAP + 12,
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.lg,
-        paddingHorizontal: t.space.lg,
-        paddingVertical: t.space.md,
-        backgroundColor: pressed ? t.colors.surface2 : t.colors.surface1,
-        borderTopLeftRadius: first ? t.radius.lg : 0,
-        borderTopRightRadius: first ? t.radius.lg : 0,
-        borderBottomLeftRadius: last ? t.radius.lg : 0,
-        borderBottomRightRadius: last ? t.radius.lg : 0,
-        borderBottomWidth: last ? 0 : 1,
-        borderBottomColor: t.colors.border,
-      })}
+      className={`min-h-[60px] flex-row items-center gap-lg bg-surface-1 px-lg py-md active:bg-surface-2 ${
+        first ? 'rounded-t-lg' : ''
+      } ${last ? 'rounded-b-lg' : 'border-b border-line'}`}
     >
       {icon ? (
         <Text variant="headline" tone="accent">
           {icon}
         </Text>
       ) : null}
-      <View style={{ flex: 1 }}>
+      <View className="flex-1">
         <Text variant="body">{label}</Text>
         {detail ? (
           <Text variant="caption" tone="muted">

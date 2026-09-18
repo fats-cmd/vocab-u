@@ -1,3 +1,5 @@
+import themeJson from './theme.json';
+
 /**
  * Design tokens.
  *
@@ -11,90 +13,30 @@
  * are a review rejection.
  */
 
-export const palette = {
-  dark: {
-    /**
-     * Page and the two surfaces that carry text, each >= 1.25 from the one below.
-     *
-     * Three text tiers over four text-bearing surfaces is over-constrained in
-     * dark mode — the muted tier ends up indistinguishable from the secondary
-     * one. So `surface3` is deliberately NOT a text surface: it is for inactive
-     * controls, dividers and chips, and nothing sets body text on it.
-     */
-    bg: '#0F0F0F',
-    surface1: '#262626',
-    surface2: '#363636',
-    /** Non-text surface: inactive controls, dividers, chips. */
-    surface3: '#464646',
+export type ColorScheme = 'dark' | 'light';
 
-    textPrimary: '#FFFFFF',
-    textSecondary: '#B8B8B8',
-    /** The dimmest text allowed, and only down to `surface2`. */
-    textMuted: '#A0A0A0',
+/** Every colour name a palette must define. */
+export type ColorKey =
+  | 'bg' | 'surface1' | 'surface2' | 'surface3'
+  | 'textPrimary' | 'textSecondary' | 'textMuted'
+  | 'accent' | 'accentInk'
+  | 'success' | 'successInk' | 'danger' | 'dangerInk' | 'warning'
+  | 'dayDone' | 'dayMissed' | 'dayToday' | 'dayFuture'
+  | 'border' | 'scrimTop' | 'scrimBottom';
 
-    accent: '#7FC8C0',
-    /** Text placed on `accent`. */
-    accentInk: '#06201E',
-
-    success: '#7FC888',
-    successInk: '#052009',
-    danger: '#E8877A',
-    dangerInk: '#2A0B06',
-    warning: '#E8C87A',
-
-    /** Streak states. `future` must never look like `missed`. */
-    dayDone: '#7FC8C0',
-    dayMissed: '#6B4A45',
-    dayToday: '#FFFFFF',
-    dayFuture: '#2F2F2F',
-
-    border: '#3D3D3D',
-    /**
-     * Scrim over photography. Dark mode gets no drop shadows at all — elevation
-     * is a surface lightness step, because a black shadow on a dark background
-     * reads as a smudge.
-     */
-    scrimTop: 'rgba(15,15,15,0.15)',
-    scrimBottom: 'rgba(15,15,15,0.88)',
-  },
-  light: {
-    bg: '#FFFFFF',
-    surface1: '#E5E5E5',
-    surface2: '#CBCBCB',
-    /** Non-text surface: inactive controls, dividers, chips. */
-    surface3: '#B4B4B4',
-
-    textPrimary: '#121212',
-    textSecondary: '#3F3F3F',
-    textMuted: '#555555',
-
-    accent: '#1F6F67',
-    accentInk: '#FFFFFF',
-
-    success: '#1B6B29',
-    successInk: '#FFFFFF',
-    danger: '#A32718',
-    dangerInk: '#FFFFFF',
-    warning: '#7A5A00',
-
-    dayDone: '#1F6F67',
-    dayMissed: '#D9A79F',
-    dayToday: '#121212',
-    dayFuture: '#E3E3E3',
-
-    border: '#B4B4B4',
-    scrimTop: 'rgba(0,0,0,0.10)',
-    scrimBottom: 'rgba(0,0,0,0.72)',
-  },
-} as const;
-
-export type ColorScheme = keyof typeof palette;
 /**
- * Widened from the literal token values on purpose: the light and dark tables
- * must be interchangeable, so the type is the *shape* of a palette, not the
- * exact hexes of one of them.
+ * The shape of a palette, not the exact hexes of one: light and dark must be
+ * interchangeable wherever a theme is consumed.
  */
-export type Colors = Record<keyof (typeof palette)['dark'], string>;
+export type Colors = Record<ColorKey, string>;
+
+/**
+ * Colour values live in `palette.json` so that exactly one file defines them and
+ * both consumers read it: this module (typed, for `useTheme()`) and
+ * `tailwind.config.js` (for NativeWind classes). A colour that drifted between
+ * the two would defeat the contrast tests, which assert against these values.
+ */
+export const palette: Record<ColorScheme, Colors> = themeJson.colors;
 
 /**
  * Two type roles, not three. The reference app runs a serif for titles, a sans
@@ -112,32 +54,30 @@ export const fonts = {
  * `size` prop — it does not drift with grid density the way the reference app's
  * 2-up and 3-up topic labels do.
  */
-export const type = {
-  display1: { fontSize: 40, lineHeight: 46, letterSpacing: -0.5 },
-  display2: { fontSize: 30, lineHeight: 36, letterSpacing: -0.3 },
-  title: { fontSize: 24, lineHeight: 30 },
-  headline: { fontSize: 20, lineHeight: 26 },
-  body: { fontSize: 16, lineHeight: 24 },
-  label: { fontSize: 14, lineHeight: 20 },
-  caption: { fontSize: 12, lineHeight: 16, letterSpacing: 0.3 },
-} as const;
+export type TypeVariant =
+  | 'display1' | 'display2' | 'title' | 'headline' | 'body' | 'label' | 'caption';
 
-export const space = {
-  xs: 4,
-  sm: 8,
-  md: 12,
-  lg: 16,
-  xl: 24,
-  xxl: 32,
-  xxxl: 48,
-  /** Minimum side gutter. Nothing touches the screen edge. */
-  gutter: 16,
-} as const;
+/**
+ * One ramp, seven steps, shared with Tailwind's `fontSize` scale so a class and
+ * a style object cannot disagree about what `body` means.
+ */
+export const type: Record<TypeVariant, { fontSize: number; lineHeight: number }> =
+  Object.fromEntries(
+    Object.entries(themeJson.fontSize).map(([k, [fontSize, lineHeight]]) => [
+      k,
+      { fontSize, lineHeight },
+    ]),
+  ) as Record<TypeVariant, { fontSize: number; lineHeight: number }>;
 
-export const radius = { sm: 8, md: 12, lg: 16, xl: 24, pill: 999 } as const;
+export const space: Record<
+  'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | 'xxxl' | 'gutter',
+  number
+> = themeJson.space;
+
+export const radius: Record<'sm' | 'md' | 'lg' | 'xl' | 'pill', number> = themeJson.radius;
 
 /** Smallest comfortable tap target. Enforced by `Pressable` wrappers. */
-export const MIN_TAP = 48;
+export const MIN_TAP: number = themeJson.minTap;
 
 export const duration = { fast: 120, base: 200, slow: 320 } as const;
 

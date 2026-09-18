@@ -1,0 +1,98 @@
+{
+  "colors": {
+    "dark": {
+      "bg": "#0F0F0F",
+      "surface1": "#262626",
+      "surface2": "#363636",
+      "surface3": "#464646",
+      "textPrimary": "#FFFFFF",
+      "textSecondary": "#B8B8B8",
+      "textMuted": "#A0A0A0",
+      "accent": "#7FC8C0",
+      "accentInk": "#06201E",
+      "success": "#7FC888",
+      "successInk": "#052009",
+      "danger": "#E8877A",
+      "dangerInk": "#2A0B06",
+      "warning": "#E8C87A",
+      "dayDone": "#7FC8C0",
+      "dayMissed": "#6B4A45",
+      "dayToday": "#FFFFFF",
+      "dayFuture": "#2F2F2F",
+      "border": "#3D3D3D",
+      "scrimTop": "rgba(15,15,15,0.15)",
+      "scrimBottom": "rgba(15,15,15,0.88)"
+    },
+    "light": {
+      "bg": "#FFFFFF",
+      "surface1": "#E5E5E5",
+      "surface2": "#CBCBCB",
+      "surface3": "#B4B4B4",
+      "textPrimary": "#121212",
+      "textSecondary": "#3F3F3F",
+      "textMuted": "#555555",
+      "accent": "#1F6F67",
+      "accentInk": "#FFFFFF",
+      "success": "#1B6B29",
+      "successInk": "#FFFFFF",
+      "danger": "#A32718",
+      "dangerInk": "#FFFFFF",
+      "warning": "#7A5A00",
+      "dayDone": "#1F6F67",
+      "dayMissed": "#D9A79F",
+      "dayToday": "#121212",
+      "dayFuture": "#E3E3E3",
+      "border": "#B4B4B4",
+      "scrimTop": "rgba(0,0,0,0.10)",
+      "scrimBottom": "rgba(0,0,0,0.72)"
+    }
+  },
+  "space": {
+    "xs": 4,
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "xxl": 32,
+    "xxxl": 48,
+    "gutter": 16
+  },
+  "radius": {
+    "sm": 8,
+    "md": 12,
+    "lg": 16,
+    "xl": 24,
+    "pill": 999
+  },
+  "fontSize": {
+    "display1": [
+      40,
+      46
+    ],
+    "display2": [
+      30,
+      36
+    ],
+    "title": [
+      24,
+      30
+    ],
+    "headline": [
+      20,
+      26
+    ],
+    "body": [
+      16,
+      24
+    ],
+    "label": [
+      14,
+      20
+    ],
+    "caption": [
+      12,
+      16
+    ]
+  },
+  "minTap": 48
+}

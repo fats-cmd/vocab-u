@@ -3,7 +3,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { type AnswerRecord, endHeadline } from '@vocab-u/core';
 import { Button, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
 import { useSession } from '@/features/practice/sessionStore';
 import { useLearner } from '@/features/progress/learnerStore';
 
@@ -19,7 +18,6 @@ import { useLearner } from '@/features/progress/learnerStore';
  *     every replay took a detour through the review list.
  */
 export default function ResultsScreen() {
-  const t = useTheme();
   const router = useRouter();
   const { summary, start, reset } = useSession();
   // Replay draws from the same measured band as the original round.
@@ -27,7 +25,7 @@ export default function ResultsScreen() {
 
   if (!summary) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg, justifyContent: 'center' }}>
+      <SafeAreaView className="flex-1 justify-center bg-bg">
         <Text variant="body" tone="secondary" center>
           No round to summarise.
         </Text>
@@ -45,9 +43,9 @@ export default function ResultsScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top', 'bottom']}>
-      <ScrollView contentContainerStyle={{ padding: t.space.gutter, gap: t.space.xl }}>
-        <View style={{ gap: t.space.sm, marginTop: t.space.xl }}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top', 'bottom']}>
+      <ScrollView contentContainerClassName="gap-xl p-gutter">
+        <View className="mt-xl gap-sm">
           <Text variant="display2" display center>
             {endHeadline(mode, endReason)}
           </Text>
@@ -62,15 +60,8 @@ export default function ResultsScreen() {
           ) : null}
         </View>
 
-        <View
-          style={{
-            backgroundColor: t.colors.surface1,
-            borderRadius: t.radius.lg,
-            padding: t.space.xl,
-            gap: t.space.md,
-          }}
-        >
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around' }}>
+        <View className="gap-md rounded-lg bg-surface-1 p-xl">
+          <View className="flex-row justify-around">
             <Stat value={String(correct)} label="correct" tone="success" />
             <Stat value={String(missed)} label="missed" tone="danger" />
             <Stat value={String(attempted)} label="attempted" tone="secondary" />
@@ -80,26 +71,20 @@ export default function ResultsScreen() {
           </Text>
         </View>
 
-        <View style={{ gap: t.space.md }}>
+        <View className="gap-md">
           <Text variant="label" tone="muted">
             {missed > 0 ? 'FIX THESE FIRST' : 'THIS ROUND'}
           </Text>
           {summary.answers.map((a, i) => (
             <View
               key={`${a.item.wordId}-${i}`}
-              style={{
-                flexDirection: 'row',
-                gap: t.space.md,
-                backgroundColor: t.colors.surface1,
-                borderRadius: t.radius.md,
-                padding: t.space.lg,
-              }}
+              className="flex-row gap-md rounded-md bg-surface-1 p-lg"
             >
               {/* Status carries a glyph as well as a colour. */}
               <Text variant="body" tone={a.correct ? 'success' : 'danger'} bold>
                 {a.correct ? '✓' : '✕'}
               </Text>
-              <View style={{ flex: 1, gap: t.space.xs }}>
+              <View className="flex-1 gap-xs">
                 {/* Always lead with the word. For a meaning-match question the
                     correct option is a definition, so showing the option here
                     would headline the definition and bury the word. */}
@@ -125,7 +110,7 @@ export default function ResultsScreen() {
         </View>
       </ScrollView>
 
-      <View style={{ padding: t.space.gutter, gap: t.space.md }}>
+      <View className="gap-md p-gutter">
         <Button label="Play again" onPress={() => void playAgain()} />
         <Button
           label="Done"
@@ -157,10 +142,17 @@ function captionFor(item: AnswerRecord['item']): string {
   }
 }
 
-function Stat({ value, label, tone }: { value: string; label: string; tone: 'success' | 'danger' | 'secondary' }) {
-  const t = useTheme();
+function Stat({
+  value,
+  label,
+  tone,
+}: {
+  value: string;
+  label: string;
+  tone: 'success' | 'danger' | 'secondary';
+}) {
   return (
-    <View style={{ alignItems: 'center', gap: t.space.xs }}>
+    <View className="items-center gap-xs">
       <Text variant="display2" display tone={tone}>
         {value}
       </Text>

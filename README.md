@@ -87,8 +87,11 @@ Three ways in, in rough order of how easy they are to start:
    No simulator needed, no device, no emulator.
 3. **App.** Screens, design system, platform work.
 
-Two rules that keep the codebase contributable: **no SQL outside `src/data`**, and
-**no business rules inside components**. Both are enforced in review.
+Three rules that keep the codebase contributable: **no SQL outside `src/data`**,
+**no business rules inside components**, and **no literal colours or sizes in a
+screen** — styling is NativeWind classes whose values come from
+`apps/mobile/src/design/theme.json`, which is also what the WCAG contrast tests
+assert against.
 
 ### Generated content policy
 

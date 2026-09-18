@@ -5,14 +5,11 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import * as Speech from 'expo-speech';
 import { CardState, type WordEntry } from '@vocab-u/core';
 import { Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
-import { MIN_TAP } from '@/design/tokens';
 import { entryById } from '@/data/corpusRepo';
 import { getCard, markSeen, savedAmong, toggleSaved } from '@/data/userRepo';
 import { ScreenHeader } from '@/features/words/ScreenHeader';
 
 export default function WordScreen() {
-  const t = useTheme();
   const router = useRouter();
   const { id } = useLocalSearchParams<{ id: string }>();
   const wordId = Number(id);
@@ -41,7 +38,7 @@ export default function WordScreen() {
 
   if (!entry) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg, justifyContent: 'center' }}>
+      <SafeAreaView className="flex-1 justify-center bg-bg">
         <Text variant="body" tone="secondary" center>
           Loading…
         </Text>
@@ -66,11 +63,11 @@ export default function WordScreen() {
     });
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
       <ScreenHeader title="" onBack={() => router.back()} />
 
-      <ScrollView contentContainerStyle={{ padding: t.space.gutter, gap: t.space.xl }}>
-        <View style={{ gap: t.space.sm, alignItems: 'center' }}>
+      <ScrollView contentContainerClassName="gap-xl p-gutter">
+        <View className="items-center gap-sm">
           <Text variant="display1" display center>
             {word.lemma}
           </Text>
@@ -79,7 +76,7 @@ export default function WordScreen() {
             accessibilityRole="button"
             accessibilityLabel={`Pronounce ${word.lemma}`}
             onPress={() => Speech.speak(word.lemma, { language: 'en-US' })}
-            style={{ minHeight: MIN_TAP, justifyContent: 'center' }}
+            className="min-h-tap justify-center"
           >
             <Text variant="body" tone="secondary">
               {word.ipa ?? ''} 🔊
@@ -90,13 +87,13 @@ export default function WordScreen() {
             ({word.pos}.) {sense.gloss}
           </Text>
 
-          <View style={{ flexDirection: 'row', gap: t.space.sm }}>
+          <View className="flex-row gap-sm">
             <Chip label={word.cefr} />
             {word.freqRank ? <Chip label={`#${word.freqRank} most common`} /> : <Chip label="rare" />}
           </View>
         </View>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'center', gap: t.space.xl }}>
+        <View className="flex-row justify-center gap-xl">
           <Action
             glyph={favourite ? '♥' : '♡'}
             label="Favourite"
@@ -115,11 +112,11 @@ export default function WordScreen() {
         {examples.length > 0 ? (
           <Section title="Examples">
             {examples.map((example, i) => (
-              <View key={example.id} style={{ flexDirection: 'row', gap: t.space.md }}>
+              <View key={example.id} className="flex-row gap-md">
                 <Text variant="body" tone="muted">
                   {i + 1}.
                 </Text>
-                <Text variant="body" style={{ flex: 1 }}>
+                <Text variant="body" className="flex-1">
                   {example.text}
                 </Text>
               </View>
@@ -129,7 +126,7 @@ export default function WordScreen() {
 
         {synonyms.length > 0 ? (
           <Section title="Synonyms">
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.sm }}>
+            <View className="flex-row flex-wrap gap-sm">
               {synonyms.map((s) => (
                 <Chip key={s} label={s} />
               ))}
@@ -164,37 +161,19 @@ function formatDue(due: number): string {
 }
 
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  const t = useTheme();
   return (
-    <View style={{ gap: t.space.md }}>
+    <View className="gap-md">
       <Text variant="label" tone="muted">
         {title.toUpperCase()}
       </Text>
-      <View
-        style={{
-          backgroundColor: t.colors.surface1,
-          borderRadius: t.radius.lg,
-          padding: t.space.lg,
-          gap: t.space.md,
-        }}
-      >
-        {children}
-      </View>
+      <View className="gap-md rounded-lg bg-surface-1 p-lg">{children}</View>
     </View>
   );
 }
 
 function Chip({ label }: { label: string }) {
-  const t = useTheme();
   return (
-    <View
-      style={{
-        paddingHorizontal: t.space.md,
-        paddingVertical: t.space.xs,
-        borderRadius: t.radius.pill,
-        backgroundColor: t.colors.surface3,
-      }}
-    >
+    <View className="rounded-pill bg-surface-3 px-md py-xs">
       <Text variant="caption">{label}</Text>
     </View>
   );
@@ -212,14 +191,13 @@ function Action({
   active: boolean;
   onPress: () => void;
 }) {
-  const t = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityState={{ selected: active }}
       onPress={onPress}
-      style={{ alignItems: 'center', gap: t.space.xs, minWidth: MIN_TAP, minHeight: MIN_TAP }}
+      className="min-h-tap min-w-tap items-center gap-xs"
     >
       <Text variant="title" tone={active ? 'accent' : 'secondary'}>
         {glyph}

@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ARCADE_MODES, MODES, type ModeId } from '@vocab-u/core';
+import { ARCADE_MODES, MODES, type Mode, type ModeId } from '@vocab-u/core';
 import { Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
 import { useLearner } from '@/features/progress/learnerStore';
 import { dueCount, personalBest } from '@/data/userRepo';
 
@@ -17,7 +16,6 @@ import { dueCount, personalBest } from '@/data/userRepo';
  * against. Both come straight off the `Mode` config, so they cannot drift.
  */
 export default function PracticeScreen() {
-  const t = useTheme();
   const router = useRouter();
   const label = useLearner((s) => s.label);
   const [due, setDue] = useState(0);
@@ -36,9 +34,9 @@ export default function PracticeScreen() {
   const open = (mode: ModeId) => router.push(`/play/${mode}`);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
-      <ScrollView contentContainerStyle={{ padding: t.space.gutter, gap: t.space.xl }}>
-        <View style={{ gap: t.space.xs }}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
+      <ScrollView contentContainerClassName="gap-xl p-gutter">
+        <View className="gap-xs">
           <Text variant="display2" display>
             Practice
           </Text>
@@ -57,7 +55,7 @@ export default function PracticeScreen() {
           onPress={() => open('review')}
         />
 
-        <View style={{ gap: t.space.md }}>
+        <View className="gap-md">
           <Text variant="label" tone="muted">
             ARCADE
           </Text>
@@ -84,14 +82,13 @@ function ModeCard({
   disabled = false,
   onPress,
 }: {
-  mode: (typeof MODES)[ModeId];
+  mode: Mode;
   badge?: string;
   best: number | null;
   bestUnit: string;
   disabled?: boolean;
   onPress: () => void;
 }) {
-  const t = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
@@ -99,16 +96,12 @@ function ModeCard({
       accessibilityState={{ disabled }}
       onPress={onPress}
       disabled={disabled}
-      style={({ pressed }) => ({
-        backgroundColor: pressed ? t.colors.surface2 : t.colors.surface1,
-        borderRadius: t.radius.lg,
-        padding: t.space.lg,
-        gap: t.space.sm,
-        opacity: disabled ? 0.5 : 1,
-      })}
+      className={`gap-sm rounded-lg bg-surface-1 p-lg active:bg-surface-2 ${
+        disabled ? 'opacity-50' : ''
+      }`}
     >
-      <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
-        <Text variant="headline" display style={{ flex: 1 }}>
+      <View className="flex-row items-center gap-sm">
+        <Text variant="headline" display className="flex-1">
           {mode.label}
         </Text>
         {badge ? (
@@ -123,9 +116,9 @@ function ModeCard({
         {mode.tagline}
       </Text>
 
-      <View style={{ flexDirection: 'row', gap: t.space.md, marginTop: t.space.xs }}>
+      <View className="mt-xs flex-row gap-md">
         {mode.rules.map((rule) => (
-          <Text key={rule} variant="caption" tone="muted" style={{ flex: 1 }}>
+          <Text key={rule} variant="caption" tone="muted" className="flex-1">
             {rule}
           </Text>
         ))}

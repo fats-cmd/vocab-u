@@ -5,8 +5,6 @@ import { useRouter } from 'expo-router';
 import * as Haptics from 'expo-haptics';
 import { CEFR_LABEL, CEFR_ORDER, DEFAULT_TEST_CONFIG, type Cefr } from '@vocab-u/core';
 import { Button, CenteredScreen, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
-import { MIN_TAP } from '@/design/tokens';
 import { useLevelTest } from '@/features/level/levelTestStore';
 import { useLearner } from '@/features/progress/learnerStore';
 
@@ -26,7 +24,6 @@ export default function LevelTestScreen() {
 /* ---------------------------------------------------------------- intro -- */
 
 function Intro() {
-  const t = useTheme();
   const router = useRouter();
   const { previous, begin, loading, error } = useLevelTest();
 
@@ -48,19 +45,19 @@ function Intro() {
       }
       secondaryAction={<Button label="Not now" kind="ghost" onPress={() => router.back()} />}
     >
-      <View style={{ gap: t.space.lg, width: '100%' }}>
+      <View className="w-full gap-lg">
         <Text variant="title" display center>
           Vocabulary level test
         </Text>
 
         {previous ? (
-          <View style={{ flexDirection: 'row', gap: t.space.md }}>
+          <View className="flex-row gap-md">
             <Tile label="Last score" value={`${previous.correct}/${previous.items}`} />
             <Tile label="Current level" value={CEFR_LABEL[previous.cefr as Cefr] ?? previous.cefr} />
           </View>
         ) : null}
 
-        <View style={{ gap: t.space.sm }}>
+        <View className="gap-sm">
           <Bullet text="Finds your level by asking what you are least sure about" />
           <Bullet text={`Adapts as you go — usually ${minItems}–${maxItems} questions, 2–3 minutes`} />
           <Bullet text="Sets the difficulty of every question the app asks you afterwards" />
@@ -77,13 +74,12 @@ function Intro() {
 }
 
 function Bullet({ text }: { text: string }) {
-  const t = useTheme();
   return (
-    <View style={{ flexDirection: 'row', gap: t.space.md }}>
+    <View className="flex-row gap-md">
       <Text variant="body" tone="accent">
         •
       </Text>
-      <Text variant="body" tone="secondary" style={{ flex: 1 }}>
+      <Text variant="body" tone="secondary" className="flex-1">
         {text}
       </Text>
     </View>
@@ -91,18 +87,8 @@ function Bullet({ text }: { text: string }) {
 }
 
 function Tile({ label, value }: { label: string; value: string }) {
-  const t = useTheme();
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: t.colors.surface1,
-        borderRadius: t.radius.md,
-        padding: t.space.lg,
-        gap: t.space.xs,
-        alignItems: 'center',
-      }}
-    >
+    <View className="flex-1 items-center gap-xs rounded-md bg-surface-1 p-lg">
       <Text variant="caption" tone="muted">
         {label}
       </Text>
@@ -116,13 +102,12 @@ function Tile({ label, value }: { label: string; value: string }) {
 /* --------------------------------------------------------------- asking -- */
 
 function Asking() {
-  const t = useTheme();
   const router = useRouter();
   const { test, item, answer, loading } = useLevelTest();
 
   if (!test || !item) {
     return (
-      <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg, justifyContent: 'center' }}>
+      <SafeAreaView className="flex-1 justify-center bg-bg">
         <Text variant="body" tone="secondary" center>
           Choosing your next question…
         </Text>
@@ -134,45 +119,28 @@ function Asking() {
   const { minItems, maxItems } = test.config;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top', 'bottom']}>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: t.space.lg,
-          padding: t.space.gutter,
-        }}
-      >
+    <SafeAreaView className="flex-1 bg-bg" edges={['top', 'bottom']}>
+      <View className="flex-row items-center gap-lg p-gutter">
         <Pressable
           accessibilityRole="button"
           accessibilityLabel="Leave the test"
           onPress={() => router.back()}
           hitSlop={12}
-          style={{ minWidth: MIN_TAP, minHeight: MIN_TAP, justifyContent: 'center' }}
+          className="min-h-tap min-w-tap justify-center"
         >
           <Text variant="headline">✕</Text>
         </Pressable>
 
-        <View style={{ flex: 1, gap: t.space.xs }}>
+        <View className="flex-1 gap-xs">
           {/* An adaptive test has no fixed length, so showing "5 / 30" would be a
               lie. It shows the question number and the range it is working in. */}
           <Text variant="label" tone="secondary">
             Question {asked + 1}
           </Text>
-          <View
-            style={{
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: t.colors.surface2,
-              overflow: 'hidden',
-            }}
-          >
+          <View className="h-[4px] overflow-hidden rounded-sm bg-surface-2">
             <View
-              style={{
-                width: `${Math.min(100, (asked / maxItems) * 100)}%`,
-                height: '100%',
-                backgroundColor: t.colors.accent,
-              }}
+              className="h-full bg-accent"
+              style={{ width: `${Math.min(100, (asked / maxItems) * 100)}%` }}
             />
           </View>
           <Text variant="caption" tone="muted">
@@ -183,15 +151,8 @@ function Asking() {
         </View>
       </View>
 
-      <View style={{ flex: 4, justifyContent: 'center', paddingHorizontal: t.space.gutter }}>
-        <View
-          style={{
-            backgroundColor: t.colors.surface1,
-            borderRadius: t.radius.lg,
-            padding: t.space.xl,
-            gap: t.space.sm,
-          }}
-        >
+      <View className="flex-[4] justify-center px-gutter">
+        <View className="gap-sm rounded-lg bg-surface-1 p-xl">
           <Text variant="caption" tone="muted">
             {item.type === 'guess-word' ? 'Which word means this?' : 'What does this mean?'}
           </Text>
@@ -206,7 +167,7 @@ function Asking() {
         </View>
       </View>
 
-      <View style={{ flex: 5, justifyContent: 'center', paddingHorizontal: t.space.gutter, gap: t.space.md }}>
+      <View className="flex-[5] justify-center gap-md px-gutter">
         {item.options.map((option, index) => (
           <Pressable
             key={`${option}-${index}`}
@@ -217,15 +178,9 @@ function Asking() {
               void Haptics.selectionAsync();
               void answer(index);
             }}
-            style={({ pressed }) => ({
-              minHeight: MIN_TAP + 12,
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingHorizontal: t.space.lg,
-              borderRadius: t.radius.md,
-              opacity: loading ? 0.5 : 1,
-              backgroundColor: pressed ? t.colors.surface3 : t.colors.surface2,
-            })}
+            className={`min-h-[60px] items-center justify-center rounded-md bg-surface-2 px-lg active:bg-surface-3 ${
+              loading ? 'opacity-50' : ''
+            }`}
           >
             <Text variant="body" bold center>
               {option}
@@ -243,7 +198,6 @@ function Asking() {
 /* --------------------------------------------------------------- result -- */
 
 function Result() {
-  const t = useTheme();
   const router = useRouter();
   const { result, reset } = useLevelTest();
   const setFromTheta = useLearner((s) => s.setFromTheta);
@@ -259,9 +213,9 @@ function Result() {
   if (!result) return null;
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top', 'bottom']}>
-      <ScrollView contentContainerStyle={{ padding: t.space.gutter, gap: t.space.xl }}>
-        <View style={{ gap: t.space.sm, marginTop: t.space.xl }}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top', 'bottom']}>
+      <ScrollView contentContainerClassName="gap-xl p-gutter">
+        <View className="mt-xl gap-sm">
           <Text variant="label" tone="muted" center>
             YOUR VOCABULARY LEVEL
           </Text>
@@ -290,7 +244,7 @@ function Result() {
 
         <Ladder current={result.cefr} />
 
-        <View style={{ flexDirection: 'row', gap: t.space.md }}>
+        <View className="flex-row gap-md">
           <Tile label="Correct" value={`${result.correct}/${result.itemsAsked}`} />
           <Tile label="Questions used" value={String(result.itemsAsked)} />
         </View>
@@ -300,7 +254,7 @@ function Result() {
         </Text>
       </ScrollView>
 
-      <View style={{ padding: t.space.gutter, gap: t.space.md }}>
+      <View className="gap-md p-gutter">
         <Button
           label="Start practising"
           onPress={() => {
@@ -323,32 +277,23 @@ function Result() {
 
 /** The band ladder, hardest at the top, matching how levels are usually drawn. */
 function Ladder({ current }: { current: Cefr }) {
-  const t = useTheme();
   const bands = [...CEFR_ORDER].reverse();
 
   return (
-    <View style={{ gap: t.space.sm }}>
+    <View className="gap-sm">
       {bands.map((band) => {
         const active = band === current;
         return (
           <View
             key={band}
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              gap: t.space.md,
-              padding: t.space.md,
-              borderRadius: t.radius.md,
-              backgroundColor: active ? t.colors.surface2 : 'transparent',
-            }}
+            className={`flex-row items-center gap-md rounded-md p-md ${
+              active ? 'bg-surface-2' : ''
+            }`}
           >
             <View
-              style={{
-                width: 12,
-                height: 12,
-                borderRadius: 6,
-                backgroundColor: active ? t.colors.accent : t.colors.surface3,
-              }}
+              className={`h-[12px] w-[12px] rounded-full ${
+                active ? 'bg-accent' : 'bg-surface-3'
+              }`}
             />
             <Text variant="body" bold={active} tone={active ? 'primary' : 'muted'}>
               {CEFR_LABEL[band]}

@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useRouter } from 'expo-router';
 import { CEFR_LABEL, bandProgress, currentStreak } from '@vocab-u/core';
 import { Button, Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
 import { activeDayKeys, dueCount, shelfCounts } from '@/data/userRepo';
 import { useLearner } from '@/features/progress/learnerStore';
 
@@ -16,7 +15,6 @@ import { useLearner } from '@/features/progress/learnerStore';
  * queue, the streak and the level all become visible in one place.
  */
 export default function ProgressScreen() {
-  const t = useTheme();
   const router = useRouter();
   const { difficulty, cefr, takenAt, lastScore, load } = useLearner();
   const [due, setDue] = useState(0);
@@ -41,22 +39,15 @@ export default function ProgressScreen() {
   const band = bandProgress(difficulty);
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: t.colors.bg }} edges={['top']}>
-      <ScrollView contentContainerStyle={{ padding: t.space.gutter, gap: t.space.xl }}>
+    <SafeAreaView className="flex-1 bg-bg" edges={['top']}>
+      <ScrollView contentContainerClassName="gap-xl p-gutter">
         <Text variant="display2" display>
           Progress
         </Text>
 
         {/* Level. At the top band there is no "points to next level" — there is
             no next level, and claiming otherwise is the reference app's bug. */}
-        <View
-          style={{
-            backgroundColor: t.colors.surface1,
-            borderRadius: t.radius.lg,
-            padding: t.space.xl,
-            gap: t.space.md,
-          }}
-        >
+        <View className="gap-md rounded-lg bg-surface-1 p-xl">
           <Text variant="label" tone="muted">
             YOUR LEVEL
           </Text>
@@ -93,17 +84,17 @@ export default function ProgressScreen() {
           />
         </View>
 
-        <View style={{ flexDirection: 'row', gap: t.space.md }}>
+        <View className="flex-row gap-md">
           <Metric label="Day streak" value={String(streak)} />
           <Metric label="Due now" value={String(due)} tone={due > 0 ? 'accent' : 'muted'} />
           <Metric label="Words seen" value={String(shelf.history ?? 0)} />
         </View>
 
-        <View style={{ gap: t.space.md }}>
+        <View className="gap-md">
           <Text variant="label" tone="muted">
             SAVED
           </Text>
-          <View style={{ flexDirection: 'row', gap: t.space.md }}>
+          <View className="flex-row gap-md">
             <Metric label="Favourites" value={String(shelf.favourite ?? 0)} />
             <Metric label="Collections" value={String(shelf.bookmark ?? 0)} />
             <Metric label="Your words" value={String(shelf.own ?? 0)} />
@@ -123,18 +114,8 @@ function Metric({
   value: string;
   tone?: 'primary' | 'accent' | 'muted';
 }) {
-  const t = useTheme();
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: t.colors.surface1,
-        borderRadius: t.radius.md,
-        padding: t.space.lg,
-        gap: t.space.xs,
-        alignItems: 'center',
-      }}
-    >
+    <View className="flex-1 items-center gap-xs rounded-md bg-surface-1 p-lg">
       <Text variant="title" display tone={tone}>
         {value}
       </Text>

@@ -11,7 +11,8 @@
     "web": "expo start --web",
     "export:web": "expo export -p web",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "theme:css": "node scripts/generate-theme-css.mjs"
   },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.15",
@@ -26,6 +27,7 @@
     "expo-speech": "~57.0.3",
     "expo-sqlite": "~57.0.3",
     "expo-status-bar": "~57.0.1",
+    "nativewind": "^4.2.1",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "react-native": "0.86.3",
@@ -40,6 +42,8 @@
   },
   "devDependencies": {
     "@types/react": "~19.2.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tailwindcss": "^3.4.17",
     "typescript": "~5.9.2"
   }
 }

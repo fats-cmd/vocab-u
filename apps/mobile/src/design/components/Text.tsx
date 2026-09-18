@@ -1,22 +1,44 @@
-import { Text as RNText, type TextProps as RNTextProps, type TextStyle } from 'react-native';
-import { useTheme } from '../theme';
-import type { type as TypeRamp } from '../tokens';
+import { Text as RNText, type TextProps as RNTextProps } from 'react-native';
+import type { TypeVariant } from '../tokens';
 
-type Variant = keyof typeof TypeRamp;
 type Tone = 'primary' | 'secondary' | 'muted' | 'accent' | 'success' | 'danger' | 'inverse';
 
 export interface TextProps extends RNTextProps {
-  variant?: Variant;
+  variant?: TypeVariant;
   tone?: Tone;
   /** Serif display face. Reserved for headlines and headwords. */
   display?: boolean;
   bold?: boolean;
   center?: boolean;
+  className?: string;
 }
 
+/** Sizes come from the shared ramp, never from a literal. */
+const SIZE: Record<TypeVariant, string> = {
+  display1: 'text-display1',
+  display2: 'text-display2',
+  title: 'text-title',
+  headline: 'text-headline',
+  body: 'text-body',
+  label: 'text-label',
+  caption: 'text-caption',
+};
+
+const TONE: Record<Tone, string> = {
+  primary: 'text-ink',
+  secondary: 'text-ink-secondary',
+  muted: 'text-ink-muted',
+  accent: 'text-accent',
+  success: 'text-success',
+  danger: 'text-danger',
+  inverse: 'text-accent-ink',
+};
+
 /**
- * The only way to render text. Sizes come from the ramp, never from a literal,
- * so a card label cannot drift when its grid changes density.
+ * The only way to render text.
+ *
+ * A card label cannot drift when its grid changes density, because the size is
+ * chosen from the ramp by name rather than typed as a number at the call site.
  */
 export function Text({
   variant = 'body',
@@ -24,29 +46,15 @@ export function Text({
   display = false,
   bold = false,
   center = false,
-  style,
+  className = '',
   ...rest
 }: TextProps) {
-  const t = useTheme();
-  const colors: Record<Tone, string> = {
-    primary: t.colors.textPrimary,
-    secondary: t.colors.textSecondary,
-    muted: t.colors.textMuted,
-    accent: t.colors.accent,
-    success: t.colors.success,
-    danger: t.colors.danger,
-    inverse: t.colors.accentInk,
-  };
-  const face: TextStyle = display
-    ? t.fonts.display
-    : bold
-      ? t.fonts.textBold
-      : t.fonts.text;
-
   return (
     <RNText
       {...rest}
-      style={[t.type[variant], face, { color: colors[tone] }, center && { textAlign: 'center' }, style]}
+      className={`${SIZE[variant]} ${TONE[tone]} ${
+        display ? 'font-display font-bold' : bold ? 'font-sans font-bold' : 'font-sans'
+      } ${center ? 'text-center' : ''} ${className}`}
     />
   );
 }

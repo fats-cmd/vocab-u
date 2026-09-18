@@ -1,6 +1,7 @@
 // Monorepo-aware Metro config: the app imports @vocab-u/core from the workspace
 // root, so Metro has to watch it and resolve modules from both node_modules trees.
 const { getDefaultConfig } = require('expo/metro-config');
+const { withNativeWind } = require('nativewind/metro');
 const path = require('node:path');
 
 const projectRoot = __dirname;
@@ -19,4 +20,5 @@ config.resolver.nodeModulesPaths = [
 // web build, which runs SQLite through wa-sqlite in a worker.
 config.resolver.assetExts.push('db', 'wasm');
 
-module.exports = config;
+// `global.css` is generated from src/design/theme.json — see scripts/generate-theme-css.mjs.
+module.exports = withNativeWind(config, { input: './global.css' });

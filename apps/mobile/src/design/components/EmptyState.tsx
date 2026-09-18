@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import { CenteredScreen } from './CenteredScreen';
 import { Text } from './Text';
 import { Button } from './Button';
-import { useTheme } from '../theme';
 
 export interface EmptyStateProps {
   title: string;
@@ -21,13 +20,9 @@ export interface EmptyStateProps {
 }
 
 export function EmptyState({ title, body, art, action }: EmptyStateProps) {
-  const t = useTheme();
   return (
-    <CenteredScreen
-      art={art}
-      action={<Button label={action.label} onPress={action.onPress} />}
-    >
-      <View style={{ gap: t.space.md }}>
+    <CenteredScreen art={art} action={<Button label={action.label} onPress={action.onPress} />}>
+      <View className="w-full gap-md">
         <Text variant="title" display center>
           {title}
         </Text>

@@ -2,15 +2,13 @@ import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { CardState, type WordEntry } from '@vocab-u/core';
 import { Text } from '@/design/components';
-import { useTheme } from '@/design/theme';
-import { MIN_TAP } from '@/design/tokens';
 
 /**
  * One word in a list.
  *
  * Carries its study state, so a list is never just names — the reference app
- * shows no progress anywhere outside its feed, which makes every catalogue it
- * has a place with no memory of what you did there.
+ * shows no progress outside its feed, which makes every catalogue it has a place
+ * with no memory of what you did there.
  */
 export function WordListRow({
   entry,
@@ -23,7 +21,6 @@ export function WordListRow({
   cardState: number | undefined;
   onToggleSave: () => void;
 }) {
-  const t = useTheme();
   const router = useRouter();
   const { word, sense } = entry;
 
@@ -32,17 +29,10 @@ export function WordListRow({
       accessibilityRole="button"
       accessibilityLabel={`${word.lemma}. ${sense.gloss}`}
       onPress={() => router.push(`/word/${word.id}`)}
-      style={({ pressed }) => ({
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: t.space.md,
-        padding: t.space.lg,
-        borderRadius: t.radius.md,
-        backgroundColor: pressed ? t.colors.surface2 : t.colors.surface1,
-      })}
+      className="flex-row items-center gap-md rounded-md bg-surface-1 p-lg active:bg-surface-2"
     >
-      <View style={{ flex: 1, gap: t.space.xs }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', gap: t.space.sm }}>
+      <View className="flex-1 gap-xs">
+        <View className="flex-row items-center gap-sm">
           <Text variant="body" bold>
             {word.lemma}
           </Text>
@@ -63,7 +53,7 @@ export function WordListRow({
         accessibilityState={{ selected: saved }}
         onPress={onToggleSave}
         hitSlop={8}
-        style={{ minWidth: MIN_TAP, minHeight: MIN_TAP, alignItems: 'center', justifyContent: 'center' }}
+        className="min-h-tap min-w-tap items-center justify-center"
       >
         <Text variant="headline" tone={saved ? 'accent' : 'muted'}>
           {saved ? '♥' : '♡'}
@@ -75,23 +65,14 @@ export function WordListRow({
 
 /** Never colour alone: each state has its own word. */
 function StudyBadge({ state }: { state: number | undefined }) {
-  const t = useTheme();
   if (state === undefined || state === CardState.New) return null;
 
-  const label =
-    state === CardState.Review ? 'learned' : state === CardState.Relearning ? 'relearning' : 'learning';
-  const tone = state === CardState.Review ? 'success' : 'warning';
+  const learned = state === CardState.Review;
+  const label = learned ? 'learned' : state === CardState.Relearning ? 'relearning' : 'learning';
 
   return (
-    <View
-      style={{
-        paddingHorizontal: t.space.sm,
-        paddingVertical: 2,
-        borderRadius: t.radius.pill,
-        backgroundColor: t.colors.surface3,
-      }}
-    >
-      <Text variant="caption" tone={tone === 'success' ? 'success' : 'accent'}>
+    <View className="rounded-pill bg-surface-3 px-sm py-[2px]">
+      <Text variant="caption" tone={learned ? 'success' : 'accent'}>
         {label}
       </Text>
     </View>
