@@ -59,6 +59,12 @@ any validation rule fails. Try breaking one — change an IPA transcription in
 | `apps/mobile` | The Expo app (iOS, Android and web from one codebase). |
 | `docs/` | [Architecture](docs/ARCHITECTURE.md) · [Reference teardown](docs/REFERENCE_TEARDOWN.md) |
 
+There is exactly **one** app, in `apps/mobile`. It builds for iOS, Android and web
+from that single codebase, so a second Expo project anywhere in the tree is a
+mistake rather than a second target. Everything is one pnpm workspace — the globs
+in `pnpm-workspace.yaml` (`apps/*`, `packages/*`, `tools/*`) are the whole of it,
+and a directory outside them is invisible to `pnpm install` and to CI.
+
 ## CI and deployment
 
 The workflows are in [`ci/workflows/`](ci/README.md) with a one-line command to
