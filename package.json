@@ -8,7 +8,8 @@
     "typecheck": "pnpm -r --no-bail typecheck",
     "corpus:build": "pnpm --filter @vocab-u/corpus build",
     "mobile": "pnpm --filter @vocab-u/mobile start",
-    "prepare:assets": "node -e \"require('node:fs').copyFileSync('tools/corpus/out/vocab.db','apps/mobile/assets/corpus/vocab.db')\""
+    "prepare:assets": "node scripts/prepare-assets.mjs",
+    "bootstrap": "pnpm corpus:build && pnpm prepare:assets"
   },
   "devDependencies": {
     "tsx": "^4.19.2",

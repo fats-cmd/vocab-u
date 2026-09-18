@@ -27,13 +27,18 @@ word feed with games attached — and then fixes the things that app gets wrong:
 
 ## Getting started
 
+Requires **Node 22+** and **pnpm 10+** (`corepack enable` gets you pnpm).
+
 ```bash
 pnpm install
-pnpm test             # 119 tests
-pnpm corpus:build     # compiles the word database
-pnpm prepare:assets   # copies it into the app bundle
-pnpm mobile           # Expo dev server: press w for web, a/i for a device
+pnpm bootstrap   # compiles the word database into the app bundle
+pnpm test        # 119 tests
+pnpm mobile      # Expo dev server: press w for web, a/i for a device
 ```
+
+`pnpm bootstrap` is not optional. The corpus is a build artifact, not a
+checked-in binary, so a fresh clone has no word database until you compile one —
+the app will fail to start without it.
 
 To produce the deployable web build:
 
