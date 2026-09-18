@@ -104,6 +104,12 @@ Two databases. This separation is the most important structural decision in the 
 Read-only is not incidental — it is what lets the same file work on every
 platform, including web, where it is fetched and deserialised into memory.
 
+It is a build artifact, never committed: a checked-in database could carry
+content that never passed the validation gate, which would make the gate
+decorative. `apps/mobile/scripts/ensure-corpus.cjs` builds it from Metro's config
+on the first bundle, so clone-install-run works on every platform with no
+separate step to remember.
+
 
 Shipped as an asset, opened read-only, replaced wholesale on content updates.
 

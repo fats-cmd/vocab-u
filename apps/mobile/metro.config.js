@@ -2,7 +2,12 @@
 // root, so Metro has to watch it and resolve modules from both node_modules trees.
 const { getDefaultConfig } = require('expo/metro-config');
 const { withNativeWind } = require('nativewind/metro');
+const { ensureCorpus } = require('./scripts/ensure-corpus.cjs');
 const path = require('node:path');
+
+// Build the corpus before anything tries to resolve it. Metro loads this file
+// on every bundle, so this covers expo start, export, run:android and EAS alike.
+ensureCorpus();
 
 const projectRoot = __dirname;
 const workspaceRoot = path.resolve(projectRoot, '../..');

@@ -31,14 +31,14 @@ Requires **Node 22+** and **pnpm 10+** (`corepack enable` gets you pnpm).
 
 ```bash
 pnpm install
-pnpm bootstrap   # compiles the word database into the app bundle
-pnpm test        # 119 tests
 pnpm mobile      # Expo dev server: press w for web, a/i for a device
+pnpm test        # 149 tests
 ```
 
-`pnpm bootstrap` is not optional. The corpus is a build artifact, not a
-checked-in binary, so a fresh clone has no word database until you compile one —
-the app will fail to start without it.
+The corpus is compiled from the datasets rather than committed, so a fresh clone
+has no word database. You do not have to remember that: Metro builds it on the
+first bundle, whichever platform you start. `pnpm bootstrap` does the same thing
+up front if you would rather see it happen.
 
 To produce the deployable web build:
 
