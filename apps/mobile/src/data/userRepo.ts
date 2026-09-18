@@ -1,68 +1,117 @@
 /**
- * Progress queries. The only place that writes user.db.
+ * The learner's progress. The only module that reads or writes user data.
  *
- * Note what is absent: any network call, any identifier, any analytics event.
- * Everything a learner does stays on their device, which is what makes "free"
- * sustainable — there is nothing to host and nothing to breach.
+ * Backed by a single document rather than a database. The corpus is genuinely
+ * relational and read-only, so SQLite suits it; progress is a few thousand small
+ * records with no joins worth the name, and putting it in SQLite bought a
+ * migration system, a platform-specific backend, and — on web, where expo-sqlite
+ * has no writable path at all — a store that silently dropped every write.
+ *
+ * Every rule about the document is a pure function in @vocab-u/core with a test
+ * beside it. This module is the thin part: hold it in memory, persist it, and
+ * keep the async API the screens already call.
  */
 
-import { type Card, CardState, type Rating, dayKey, newCard } from '@vocab-u/core';
-import { openUser } from './db';
+import {
+  type Card,
+  CardState,
+  type OwnWord,
+  type Rating,
+  type SaveKind,
+  type StoredLevel,
+  type UserState,
+  activeDayKeys as activeDayKeysOf,
+  addLevel,
+  addOwnWord as addOwnWordTo,
+  appendReview,
+  dueQueue,
+  emptyUserState,
+  getCard as getCardFrom,
+  latestLevel as latestLevelOf,
+  markSeen as markSeenIn,
+  newCard,
+  personalBest as personalBestOf,
+  putCard,
+  recordActivity as recordActivityIn,
+  recordBest as recordBestIn,
+  removeOwnWord,
+  reviveUserState,
+  savedIds as savedIdsOf,
+  seenIds as seenIdsOf,
+  setValue as setValueIn,
+  toggleSaved as toggleSavedIn,
+} from '@vocab-u/core';
+import { readUserDocument, writeUserDocument } from './userStorage';
 
-interface CardRow {
-  word_id: number;
-  state: number;
-  due: number;
-  stability: number;
-  difficulty: number;
-  reps: number;
-  lapses: number;
-  last_review: number | null;
+export type { OwnWord, SaveKind, StoredLevel };
+
+let state: UserState | null = null;
+let loading: Promise<UserState> | null = null;
+
+async function load(): Promise<UserState> {
+  if (state) return state;
+  // Memoise the in-flight load, not just the result: several screens read on
+  // first paint, and two concurrent loads would each start from disk and the
+  // slower one would overwrite the faster one's writes.
+  loading ??= (async () => {
+    const raw = await readUserDocument();
+    let parsed: unknown = null;
+    if (raw !== null) {
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        parsed = null; // Truncated write from a hard kill. Start clean.
+      }
+    }
+    state = reviveUserState(parsed);
+    return state;
+  })();
+  return loading;
 }
 
-const toCard = (r: CardRow): Card => ({
-  wordId: r.word_id,
-  state: r.state as CardState,
-  due: r.due,
-  stability: r.stability,
-  difficulty: r.difficulty,
-  reps: r.reps,
-  lapses: r.lapses,
-  lastReview: r.last_review,
-});
+const PERSIST_DEBOUNCE_MS = 300;
+let timer: ReturnType<typeof setTimeout> | null = null;
 
-export async function getCard(wordId: number, now: number): Promise<Card> {
-  const db = await openUser();
-  const row = await db.getFirstAsync<CardRow>('SELECT * FROM card WHERE word_id = ?', [wordId]);
-  return row ? toCard(row) : newCard(wordId, now);
-}
-
-export async function saveCard(card: Card): Promise<void> {
-  const db = await openUser();
-  await db.runAsync(
-    `INSERT INTO card (word_id, state, due, stability, difficulty, reps, lapses, last_review)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-     ON CONFLICT(word_id) DO UPDATE SET
-       state = excluded.state, due = excluded.due, stability = excluded.stability,
-       difficulty = excluded.difficulty, reps = excluded.reps, lapses = excluded.lapses,
-       last_review = excluded.last_review`,
-    [
-      card.wordId,
-      card.state,
-      card.due,
-      card.stability,
-      card.difficulty,
-      card.reps,
-      card.lapses,
-      card.lastReview,
-    ],
-  );
+export async function flush(): Promise<void> {
+  if (timer) {
+    clearTimeout(timer);
+    timer = null;
+  }
+  if (state) await writeUserDocument(JSON.stringify(state));
 }
 
 /**
- * Append-only. This is what lets FSRS parameters be re-optimised on-device
- * later, with no server: the data needed to fit the model is already here.
+ * Apply a change and schedule a save.
+ *
+ * Every mutation goes through here, so persistence cannot be forgotten at a call
+ * site. Debounced because a practice round writes a card and a log entry per
+ * answer.
  */
+async function update(change: (current: UserState) => UserState): Promise<void> {
+  state = change(await load());
+  if (timer) clearTimeout(timer);
+  timer = setTimeout(() => void flush(), PERSIST_DEBOUNCE_MS);
+}
+
+// The debounce loses its last window if the app goes away mid-wait. `pagehide`
+// fires where `beforeunload` does not, notably a mobile browser backgrounding.
+if (typeof globalThis.addEventListener === 'function') {
+  globalThis.addEventListener('pagehide', () => void flush());
+  globalThis.addEventListener('visibilitychange', () => {
+    if (globalThis.document?.visibilityState === 'hidden') void flush();
+  });
+}
+
+/* -------------------------------------------------------------- cards --- */
+
+export async function getCard(wordId: number, now: number): Promise<Card> {
+  return getCardFrom(await load(), wordId) ?? newCard(wordId, now);
+}
+
+export async function saveCard(card: Card): Promise<void> {
+  await update((s) => putCard(s, card));
+}
+
 export async function logReview(
   wordId: number,
   rating: Rating,
@@ -70,166 +119,130 @@ export async function logReview(
   at: number,
   mode: string,
 ): Promise<void> {
-  const db = await openUser();
-  await db.runAsync(
-    'INSERT INTO review_log (word_id, rated, elapsed_ms, reviewed_at, mode) VALUES (?, ?, ?, ?, ?)',
-    [wordId, rating, elapsedMs, at, mode],
-  );
+  await update((s) => appendReview(s, { wordId, rated: rating, elapsedMs, reviewedAt: at, mode }));
 }
 
 export async function dueCards(now: number, limit: number): Promise<Card[]> {
-  const db = await openUser();
-  const rows = await db.getAllAsync<CardRow>(
-    'SELECT * FROM card WHERE state != ? AND due <= ? ORDER BY due ASC LIMIT ?',
-    [CardState.New, now, limit],
-  );
-  return rows.map(toCard);
+  return dueQueue(Object.values((await load()).cards), now, limit);
 }
 
 export async function dueCount(now: number): Promise<number> {
-  const db = await openUser();
-  const row = await db.getFirstAsync<{ n: number }>(
-    'SELECT COUNT(*) AS n FROM card WHERE state != ? AND due <= ?',
-    [CardState.New, now],
-  );
-  return row?.n ?? 0;
+  const cards = Object.values((await load()).cards);
+  return cards.filter((c) => c.state !== CardState.New && c.due <= now).length;
 }
 
-// --- saved material ---------------------------------------------------------
+export async function cardStatesFor(wordIds: readonly number[]): Promise<Map<number, number>> {
+  const s = await load();
+  const out = new Map<number, number>();
+  for (const id of wordIds) {
+    const card = s.cards[String(id)];
+    if (card) out.set(id, card.state);
+  }
+  return out;
+}
 
-export type SaveKind = 'favourite' | 'bookmark';
+/* ------------------------------------------------------- saved material -- */
 
 export async function toggleSaved(wordId: number, kind: SaveKind, now: number): Promise<boolean> {
-  const db = await openUser();
-  const existing = await db.getFirstAsync<{ word_id: number }>(
-    'SELECT word_id FROM saved WHERE word_id = ? AND kind = ?',
-    [wordId, kind],
-  );
-  if (existing) {
-    await db.runAsync('DELETE FROM saved WHERE word_id = ? AND kind = ?', [wordId, kind]);
-    return false;
-  }
-  await db.runAsync('INSERT INTO saved (word_id, kind, at) VALUES (?, ?, ?)', [wordId, kind, now]);
-  return true;
+  const result = toggleSavedIn(await load(), wordId, kind, now);
+  await update(() => result.state);
+  return result.saved;
 }
 
 export async function savedIds(kind: SaveKind): Promise<number[]> {
-  const db = await openUser();
-  const rows = await db.getAllAsync<{ word_id: number }>(
-    'SELECT word_id FROM saved WHERE kind = ? ORDER BY at DESC',
-    [kind],
-  );
-  return rows.map((r) => r.word_id);
+  return savedIdsOf(await load(), kind);
 }
 
-/** Counts for the personal shelf. The reference app's shelf shows none. */
+export async function savedAmong(
+  wordIds: readonly number[],
+  kind: SaveKind,
+): Promise<Set<number>> {
+  const s = await load();
+  return new Set(wordIds.filter((id) => s.saved[kind][String(id)] !== undefined));
+}
+
 export async function shelfCounts(): Promise<Record<string, number>> {
-  const db = await openUser();
-  const saved = await db.getAllAsync<{ kind: string; n: number }>(
-    'SELECT kind, COUNT(*) AS n FROM saved GROUP BY kind',
-  );
-  const seen = await db.getFirstAsync<{ n: number }>('SELECT COUNT(*) AS n FROM seen');
-  const own = await db.getFirstAsync<{ n: number }>('SELECT COUNT(*) AS n FROM own_word');
+  const s = await load();
   return {
-    ...Object.fromEntries(saved.map((s) => [s.kind, s.n])),
-    history: seen?.n ?? 0,
-    own: own?.n ?? 0,
+    favourite: Object.keys(s.saved.favourite).length,
+    bookmark: Object.keys(s.saved.bookmark).length,
+    history: Object.keys(s.seen).length,
+    own: s.ownWords.length,
   };
 }
 
 export async function markSeen(wordId: number, now: number): Promise<void> {
-  const db = await openUser();
-  await db.runAsync(
-    `INSERT INTO seen (word_id, first_at, count) VALUES (?, ?, 1)
-     ON CONFLICT(word_id) DO UPDATE SET count = count + 1`,
-    [wordId, now],
-  );
+  await update((s) => markSeenIn(s, wordId, now));
 }
 
-/** Per-topic progress, so every topic card can show how far in you are. */
-export async function seenCountByTopic(): Promise<Map<number, number>> {
-  const db = await openUser();
-  const rows = await db.getAllAsync<{ word_id: number }>('SELECT word_id FROM seen');
-  // Topic membership lives in the corpus, so the join happens in the feature
-  // layer; this returns the raw set the caller intersects.
-  return new Map(rows.map((r) => [r.word_id, 1]));
+export async function seenIds(limit = 200): Promise<number[]> {
+  return seenIdsOf(await load(), limit);
 }
 
-// --- activity and streak ----------------------------------------------------
+/* ---------------------------------------------------- activity + streak -- */
 
 export async function recordActivity(now: number, reviews: number, seconds: number): Promise<void> {
-  const db = await openUser();
-  await db.runAsync(
-    `INSERT INTO day_activity (day, reviews, seconds, goal_met) VALUES (?, ?, ?, 0)
-     ON CONFLICT(day) DO UPDATE SET reviews = reviews + ?, seconds = seconds + ?`,
-    [dayKey(now), reviews, seconds, reviews, seconds],
-  );
+  await update((s) => recordActivityIn(s, now, reviews, seconds));
 }
 
 export async function activeDayKeys(): Promise<Set<string>> {
-  const db = await openUser();
-  const rows = await db.getAllAsync<{ day: string }>(
-    'SELECT day FROM day_activity WHERE reviews > 0',
-  );
-  return new Set(rows.map((r) => r.day));
+  return activeDayKeysOf(await load());
 }
 
-// --- level ------------------------------------------------------------------
-
-export interface StoredLevel {
-  theta: number;
-  se: number;
-  cefr: string;
-  takenAt: number;
-  items: number;
-  correct: number;
-}
+/* -------------------------------------------------------------- level --- */
 
 export async function saveLevel(result: StoredLevel): Promise<void> {
-  const db = await openUser();
-  await db.runAsync(
-    'INSERT INTO level_result (taken_at, theta, se, cefr, items, correct) VALUES (?, ?, ?, ?, ?, ?)',
-    [result.takenAt, result.theta, result.se, result.cefr, result.items, result.correct],
-  );
+  await update((s) => addLevel(s, result));
 }
 
 export async function latestLevel(): Promise<StoredLevel | null> {
-  const db = await openUser();
-  const row = await db.getFirstAsync<{
-    taken_at: number; theta: number; se: number; cefr: string; items: number; correct: number;
-  }>('SELECT * FROM level_result ORDER BY taken_at DESC LIMIT 1');
-  return row
-    ? { theta: row.theta, se: row.se, cefr: row.cefr, takenAt: row.taken_at, items: row.items, correct: row.correct }
-    : null;
+  return latestLevelOf(await load());
 }
 
-// --- key/value (personal bests, settings) -----------------------------------
+/* ---------------------------------------------------------- own words --- */
 
-export async function getValue(key: string): Promise<string | null> {
-  const db = await openUser();
-  const row = await db.getFirstAsync<{ v: string }>('SELECT v FROM kv WHERE k = ?', [key]);
-  return row?.v ?? null;
+export async function listOwnWords(): Promise<OwnWord[]> {
+  return (await load()).ownWords;
 }
 
-export async function setValue(key: string, value: string): Promise<void> {
-  const db = await openUser();
-  await db.runAsync(
-    'INSERT INTO kv (k, v) VALUES (?, ?) ON CONFLICT(k) DO UPDATE SET v = excluded.v',
-    [key, value],
+export async function addOwnWord(
+  lemma: string,
+  gloss: string,
+  pos: string | null,
+  note: string | null,
+  now: number,
+): Promise<void> {
+  await update((s) =>
+    addOwnWordTo(s, { lemma: lemma.trim(), gloss: gloss.trim(), pos, note, createdAt: now }),
   );
 }
 
-/** Personal best per mode. The reference app offers nothing to play against. */
-export const bestKey = (mode: string) => `best:${mode}`;
+export async function deleteOwnWord(id: number): Promise<void> {
+  await update((s) => removeOwnWord(s, id));
+}
+
+/* ------------------------------------------------- key/value and bests --- */
+
+export async function getValue(key: string): Promise<string | null> {
+  return (await load()).kv[key] ?? null;
+}
+
+export async function setValue(key: string, value: string): Promise<void> {
+  await update((s) => setValueIn(s, key, value));
+}
 
 export async function personalBest(mode: string): Promise<number | null> {
-  const raw = await getValue(bestKey(mode));
-  return raw === null ? null : Number(raw);
+  return personalBestOf(await load(), mode);
 }
 
 export async function recordBest(mode: string, score: number): Promise<boolean> {
-  const current = await personalBest(mode);
-  if (current !== null && score <= current) return false;
-  await setValue(bestKey(mode), String(score));
-  return true;
+  const result = recordBestIn(await load(), mode, score);
+  if (result.isBest) await update(() => result.state);
+  return result.isBest;
+}
+
+/** Test seam. */
+export function __resetUserState(): void {
+  state = null;
+  loading = null;
 }

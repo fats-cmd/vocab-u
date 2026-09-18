@@ -136,7 +136,9 @@ export function summarise(state: SessionState, previousBest: number | null): Ses
     accuracy: attempted === 0 ? 0 : correct / attempted,
     // Missed words first: the results screen exists to fix mistakes, not to rank.
     answers: [...state.answers].sort((a, b) => Number(a.correct) - Number(b.correct)),
-    isPersonalBest: previousBest === null ? attempted > 0 : score > previousBest,
+    // A first run is only a best if it actually scored. Treating "no previous
+    // best" as "any result wins" congratulated a learner who got nothing right.
+    isPersonalBest: score > (previousBest ?? 0),
     previousBest,
   };
 }

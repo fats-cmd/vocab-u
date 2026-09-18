@@ -9,3 +9,4 @@ export * from './session/modes';
 export * from './session/runner';
 export * from './design/contrast';
 export * from './progress/streak';
+export * from './progress/userState';

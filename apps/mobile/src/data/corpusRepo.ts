@@ -244,3 +244,36 @@ export async function levelTestPool(): Promise<Array<{ wordId: number; difficult
   );
   return rows.map((r) => ({ wordId: r.id, difficulty: r.difficulty }));
 }
+
+export async function topicById(topicId: number): Promise<TopicWithCount | null> {
+  const db = await openCorpus();
+  const row = await db.getFirstAsync<TopicWithCount>(
+    `SELECT t.id, t.slug, t.title, t.section, t.scope, t.ord,
+            COUNT(tw.word_id) AS wordCount
+     FROM topic t
+     LEFT JOIN topic_word tw ON tw.topic_id = t.id
+     WHERE t.id = ?
+     GROUP BY t.id`,
+    [topicId],
+  );
+  return row ?? null;
+}
+
+/**
+ * Entries for an explicit list of ids, in the order given.
+ *
+ * Saved lists are ordered by when they were saved, which lives in the user
+ * database — so the caller owns the order and this restores it after the corpus
+ * returns rows in whatever order SQLite finds them.
+ */
+export async function entriesByIds(wordIds: readonly number[]): Promise<WordEntry[]> {
+  if (wordIds.length === 0) return [];
+  const db = await openCorpus();
+  const marks = wordIds.map(() => '?').join(',');
+  const rows = await db.getAllAsync<EntryRow>(`${ENTRY_SELECT} WHERE w.id IN (${marks})`, [
+    ...wordIds,
+  ]);
+  const hydrated = await hydrate(rows);
+  const byId = new Map(hydrated.map((e) => [e.word.id, e]));
+  return wordIds.map((id) => byId.get(id)).filter((e): e is WordEntry => e !== undefined);
+}

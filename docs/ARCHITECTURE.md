@@ -50,7 +50,7 @@ Four things the reference app does not have, which are the reason to build this:
 | 1 | **Expo / React Native / TypeScript** | one codebase → iOS + Android + web PWA; largest contributor pool; EAS gives free CI builds for OSS |
 | 2 | **No backend in v1** | zero hosting cost is what makes "free for the community" survivable; also zero privacy surface, and the app works on a plane |
 | 3 | **SQLite corpus, bundled, read-only** | 40k words with FTS in ~25 MB; instant queries; no network |
-| 4 | **Progress in a separate writable DB** | corpus ships new versions; user data must never be clobbered by a content update |
+| 4 | **Progress is a document, not a database** | progress is small and has no joins worth the name; SQLite bought a migration system, a platform backend, and on web a store that silently dropped every write (see ADR below) |
 | 5 | **Corpus built by a pipeline, not hand-maintained** | `tools/corpus` compiles open datasets into `vocab.db`; the data is reviewable as a diff, reproducible, and license-clean |
 | 6 | **Pure-TS domain core, no RN imports** | scheduler, scoring, item generation and the level test are unit-testable in plain Node and reusable by any future client |
 | 7 | **OS share sheet, not per-network SDKs** | free, no SDK bloat, no tracking pixels, respects installed apps |
@@ -100,6 +100,10 @@ is what keeps the rules of the app testable without a simulator.
 Two databases. This separation is the most important structural decision in the app.
 
 ### 4.1 `vocab.db` — corpus (read-only, bundled, versioned)
+
+Read-only is not incidental — it is what lets the same file work on every
+platform, including web, where it is fetched and deserialised into memory.
+
 
 Shipped as an asset, opened read-only, replaced wholesale on content updates.
 
@@ -155,38 +159,52 @@ Every row in `example` carries `reviewed`. **Unreviewed generated text never rea
 user.** That flag is the answer to "Liechtenstein is a quaint principality by Alpine
 bounds."
 
-### 4.2 `user.db` — progress (read-write, local, never overwritten)
+### 4.2 The user document — progress (read-write, local, never overwritten)
 
-```sql
-CREATE TABLE card (                    -- one per word the user has met
-  word_id      INTEGER PRIMARY KEY,
-  state        INTEGER NOT NULL,       -- 0 new 1 learning 2 review 3 relearning
-  due          INTEGER NOT NULL,       -- epoch ms
-  stability    REAL NOT NULL,
-  difficulty   REAL NOT NULL,
-  reps         INTEGER NOT NULL DEFAULT 0,
-  lapses       INTEGER NOT NULL DEFAULT 0,
-  last_review  INTEGER
-);
-CREATE INDEX card_due ON card(due) WHERE state != 0;
+Progress is **not** a database. It is one JSON document, held in memory and
+persisted on change:
 
-CREATE TABLE review_log (              -- append-only; enables FSRS re-optimisation
-  id INTEGER PRIMARY KEY, word_id INTEGER, rated INTEGER,
-  elapsed_ms INTEGER, reviewed_at INTEGER, mode TEXT
-);
-
-CREATE TABLE saved   (word_id INTEGER, kind TEXT, at INTEGER, PRIMARY KEY(word_id, kind));
-CREATE TABLE seen    (word_id INTEGER PRIMARY KEY, first_at INTEGER, count INTEGER);
-CREATE TABLE collection      (id INTEGER PRIMARY KEY, name TEXT NOT NULL, created_at INTEGER);
-CREATE TABLE collection_word (collection_id INTEGER, word_id INTEGER, PRIMARY KEY(collection_id, word_id));
-CREATE TABLE own_word        (id INTEGER PRIMARY KEY, lemma TEXT, pos TEXT, gloss TEXT, note TEXT, created_at INTEGER);
-CREATE TABLE day_activity    (day TEXT PRIMARY KEY, reviews INTEGER, seconds INTEGER, goal_met INTEGER);
-CREATE TABLE level_result    (id INTEGER PRIMARY KEY, taken_at INTEGER, theta REAL, se REAL, cefr TEXT, items INTEGER);
-CREATE TABLE kv              (k TEXT PRIMARY KEY, v TEXT);
+```ts
+interface UserState {
+  version: number;
+  cards:       Record<wordId, Card>;        // FSRS state per word
+  reviewLog:   ReviewLogEntry[];            // append-only, capped at 5000
+  saved:       { favourite: …; bookmark: … };
+  seen:        Record<wordId, { firstAt; count }>;
+  collections: Collection[];
+  ownWords:    OwnWord[];
+  days:        Record<dayKey, { reviews; seconds }>;
+  levels:      StoredLevel[];
+  kv:          Record<string, string>;      // personal bests, settings
+  nextId:      number;
+}
 ```
 
-`review_log` being append-only is what lets us ship FSRS parameter optimisation later
-without a server: the data to fit the model is already on the device.
+Stored as `user-state.json` in the documents directory on native, and in
+IndexedDB on web.
+
+**Why not SQLite.** It was SQLite first, and that was wrong twice over. The small
+reason: this data has no joins worth the name, so SQL bought a migration system
+and a schema for no query it actually needed. The large reason: **expo-sqlite has
+no writable path on web at all.** Verified in a browser, not assumed —
+
+- opening a database by name uses OPFS, which throws `xFileControl` / `xLock`
+  and loses every write;
+- opening a second database silently shadows the first, so the corpus's own
+  tables vanish with `no such table: word`;
+- `CREATE TABLE` against a deserialised database does not take effect, so
+  migrations cannot run there either.
+
+The symptom was the worst kind: the app looked fine and quietly discarded
+everything the learner did.
+
+As a document it is one shape on every platform, needs no migrations beyond a
+version check, and — the reason it lives in `packages/core` — every rule about it
+is a pure function with a test beside it. `reviveUserState` never throws: a
+corrupt file costs someone their history, never their app.
+
+**The separation still holds, and matters as much as before.** A corpus update
+ships a new `vocab.db` and cannot touch `user-state.json`.
 
 ### 4.3 Difficulty and CEFR banding
 
@@ -298,7 +316,9 @@ SQLite (expo-sqlite)     +     packages/core (pure functions, no I/O)
 
 Rules that keep it contributable:
 
-- **No SQL outside `src/data`.** Screens call repositories.
+- **No SQL outside `src/data`.** Screens call repositories. All corpus SQL is in
+  `corpusRepo`; all progress access is in `userRepo`, which owns the only mutable
+  copy of the user document and is the only place that persists it.
 - **No business rules in components.** Scoring, scheduling and selection live in `core`.
 - **Every screen renders from a store**, so screens are testable with a seeded store.
 - **Design tokens only** — no literal colours or pixel values in feature code.

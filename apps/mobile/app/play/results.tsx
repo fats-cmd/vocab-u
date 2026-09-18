@@ -1,7 +1,7 @@
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { endHeadline } from '@vocab-u/core';
+import { type AnswerRecord, endHeadline } from '@vocab-u/core';
 import { Button, Text } from '@/design/components';
 import { useTheme } from '@/design/theme';
 import { useSession } from '@/features/practice/sessionStore';
@@ -100,11 +100,14 @@ export default function ResultsScreen() {
                 {a.correct ? '✓' : '✕'}
               </Text>
               <View style={{ flex: 1, gap: t.space.xs }}>
+                {/* Always lead with the word. For a meaning-match question the
+                    correct option is a definition, so showing the option here
+                    would headline the definition and bury the word. */}
                 <Text variant="body" bold>
-                  {a.item.options[a.item.answerIndex]}
+                  {a.item.lemma}
                 </Text>
                 <Text variant="caption" tone="secondary">
-                  {a.item.prompt}
+                  {captionFor(a.item)}
                 </Text>
                 {!a.correct && a.chosenIndex !== null ? (
                   <Text variant="caption" tone="muted">
@@ -135,6 +138,23 @@ export default function ResultsScreen() {
       </View>
     </SafeAreaView>
   );
+}
+
+/**
+ * What to show under the headword, per question type.
+ *
+ * A synonym question's prompt *is* the headword, so using the prompt blindly
+ * printed the word twice.
+ */
+function captionFor(item: AnswerRecord['item']): string {
+  switch (item.type) {
+    case 'meaning-match':
+      return item.options[item.answerIndex] ?? '';
+    case 'match-synonym':
+      return `synonym: ${item.options[item.answerIndex] ?? ''}`;
+    default:
+      return item.prompt;
+  }
 }
 
 function Stat({ value, label, tone }: { value: string; label: string; tone: 'success' | 'danger' | 'secondary' }) {

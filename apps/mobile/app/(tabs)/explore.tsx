@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Pressable, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { Text } from '@/design/components';
 import { useTheme } from '@/design/theme';
 import { allTopics, type TopicWithCount } from '@/data/corpusRepo';
@@ -40,15 +41,19 @@ const SECTION_ORDER = ['about-us', 'world', 'domain', 'test', 'origin', 'languag
 
 export default function ExploreScreen() {
   const t = useTheme();
+  const router = useRouter();
   const [topics, setTopics] = useState<TopicWithCount[]>([]);
   const [shelf, setShelf] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    void (async () => {
-      setTopics(await allTopics());
-      setShelf(await shelfCounts());
-    })();
-  }, []);
+  // Counts change whenever a word is saved elsewhere, so refresh on focus.
+  useFocusEffect(
+    useCallback(() => {
+      void (async () => {
+        setTopics(await allTopics());
+        setShelf(await shelfCounts());
+      })();
+    }, []),
+  );
 
   const grouped = useMemo(() => {
     const map = new Map<string, TopicWithCount[]>();
@@ -69,10 +74,26 @@ export default function ExploreScreen() {
 
         {/* Your material before theirs. */}
         <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
-          <ShelfCard label="Favourites" count={shelf.favourite ?? 0} />
-          <ShelfCard label="Collections" count={shelf.bookmark ?? 0} />
-          <ShelfCard label="Your own words" count={shelf.own ?? 0} />
-          <ShelfCard label="History" count={shelf.history ?? 0} />
+          <ShelfCard
+            label="Favourites"
+            count={shelf.favourite ?? 0}
+            onPress={() => router.push('/list/favourites')}
+          />
+          <ShelfCard
+            label="Collections"
+            count={shelf.bookmark ?? 0}
+            onPress={() => router.push('/list/collections')}
+          />
+          <ShelfCard
+            label="Your own words"
+            count={shelf.own ?? 0}
+            onPress={() => router.push('/own-words')}
+          />
+          <ShelfCard
+            label="History"
+            count={shelf.history ?? 0}
+            onPress={() => router.push('/list/history')}
+          />
         </View>
 
         {SECTION_ORDER.filter((s) => grouped.has(s)).map((section) => (
@@ -87,7 +108,11 @@ export default function ExploreScreen() {
             </View>
             <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: t.space.md }}>
               {(grouped.get(section) ?? []).map((topic) => (
-                <TopicCard key={topic.id} topic={topic} />
+                <TopicCard
+                  key={topic.id}
+                  topic={topic}
+                  onPress={() => router.push(`/topic/${topic.id}`)}
+                />
               ))}
             </View>
           </View>
@@ -97,12 +122,21 @@ export default function ExploreScreen() {
   );
 }
 
-function ShelfCard({ label, count }: { label: string; count: number }) {
+function ShelfCard({
+  label,
+  count,
+  onPress,
+}: {
+  label: string;
+  count: number;
+  onPress: () => void;
+}) {
   const t = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`${label}, ${count} words`}
+      onPress={onPress}
       style={({ pressed }) => ({
         flexGrow: 1,
         flexBasis: '45%',
@@ -127,12 +161,13 @@ function ShelfCard({ label, count }: { label: string; count: number }) {
  * sit in — the reference app's 3-up cards silently use smaller type than its
  * 2-up cards.
  */
-function TopicCard({ topic }: { topic: TopicWithCount }) {
+function TopicCard({ topic, onPress }: { topic: TopicWithCount; onPress: () => void }) {
   const t = useTheme();
   return (
     <Pressable
       accessibilityRole="button"
       accessibilityLabel={`${topic.title}, ${topic.wordCount} words. ${topic.scope}`}
+      onPress={onPress}
       style={({ pressed }) => ({
         flexGrow: 1,
         flexBasis: '45%',

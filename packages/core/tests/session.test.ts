@@ -9,6 +9,7 @@ const T0 = 1_700_000_000_000;
 const item = (id: number): GameItem => ({
   type: 'guess-word',
   wordId: id,
+  lemma: `word${id}`,
   prompt: `definition ${id}`,
   hint: null,
   options: ['a', 'b', 'c', 'd'],
@@ -124,6 +125,15 @@ describe('summary', () => {
     for (let i = 0; i < 6; i += 1) s = answer(s, 0, T0 + i * 500);
     expect(summarise(s, 4).isPersonalBest).toBe(true);
     expect(summarise(s, 9).isPersonalBest).toBe(false);
+    expect(summarise(s, 6).isPersonalBest).toBe(false);
     expect(summarise(s, null).isPersonalBest).toBe(true);
+  });
+
+  it('does not call a scoreless first run a personal best', () => {
+    // Congratulating someone who got nothing right reads as mockery.
+    let s = startSession(MODES.perfection, deck(10), T0);
+    for (let i = 0; i < 3; i += 1) s = answer(s, 1, T0 + i * 500);
+    expect(summarise(s, null).correct).toBe(0);
+    expect(summarise(s, null).isPersonalBest).toBe(false);
   });
 });

@@ -18,15 +18,19 @@ export default function PlayScreen() {
   const mode = MODES[modeId] ?? MODES.sprint;
 
   const difficulty = useLearner((s) => s.difficulty);
-  const { state, summary, loading, error, start, answer, tick, reset } = useSession();
+  const { state, summary, loading, error, start, answer, tick } = useSession();
   const started = useRef(false);
 
   useEffect(() => {
     if (started.current) return;
     started.current = true;
     void start(modeId, difficulty);
-    return () => reset();
-  }, [modeId, difficulty, start, reset]);
+    // Deliberately no cleanup here. This screen unmounts as it hands over to the
+    // results screen, and resetting on unmount wiped the summary the results
+    // screen exists to show — the run ended and the learner was told there was
+    // "No round to summarise". The session is cleared when a new round starts
+    // and when the learner leaves the results screen.
+  }, [modeId, difficulty, start]);
 
   // Timed modes end on their own; the reducer decides, this only supplies `now`.
   useEffect(() => {

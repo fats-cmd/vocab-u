@@ -15,6 +15,14 @@ export type GameType = 'guess-word' | 'meaning-match' | 'fill-gap' | 'match-syno
 export interface GameItem {
   type: GameType;
   wordId: number;
+  /**
+   * The headword, regardless of which side of it the question asks about.
+   *
+   * The results screen always leads with the word: for `meaning-match` the
+   * correct *option* is a definition, so without this the list would headline a
+   * definition and bury the word it belongs to.
+   */
+  lemma: string;
   /** What the learner reads. */
   prompt: string;
   /** Secondary line, e.g. the part of speech. Optional by design. */
@@ -68,6 +76,7 @@ export function guessTheWord(input: GeneratorInput): GameItem | null {
   return {
     type: 'guess-word',
     wordId: input.entry.word.id,
+    lemma: input.entry.word.lemma,
     prompt: input.entry.sense.gloss,
     hint: `(${input.entry.word.pos}.)`,
     options,
@@ -97,6 +106,7 @@ export function meaningMatch(
   return {
     type: 'meaning-match',
     wordId: input.entry.word.id,
+    lemma: input.entry.word.lemma,
     prompt: input.entry.word.lemma,
     hint: input.entry.word.ipa,
     options,
@@ -134,6 +144,7 @@ export function fillTheGap(input: GeneratorInput): GameItem | null {
   return {
     type: 'fill-gap',
     wordId: input.entry.word.id,
+    lemma: input.entry.word.lemma,
     prompt,
     hint: input.entry.sense.gloss,
     options,
@@ -157,6 +168,7 @@ export function matchSynonym(input: GeneratorInput): GameItem | null {
   return {
     type: 'match-synonym',
     wordId: input.entry.word.id,
+    lemma: input.entry.word.lemma,
     prompt: input.entry.word.lemma,
     hint: `(${input.entry.word.pos}.) synonym?`,
     options,

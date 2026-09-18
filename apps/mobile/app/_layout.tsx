@@ -28,6 +28,10 @@ export default function RootLayout() {
           <Stack.Screen name="play/[mode]" options={{ presentation: 'fullScreenModal' }} />
           <Stack.Screen name="play/results" options={{ presentation: 'fullScreenModal' }} />
           <Stack.Screen name="level-test/index" options={{ presentation: 'fullScreenModal' }} />
+          <Stack.Screen name="topic/[id]" />
+          <Stack.Screen name="word/[id]" />
+          <Stack.Screen name="list/[kind]" />
+          <Stack.Screen name="own-words/index" />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>
