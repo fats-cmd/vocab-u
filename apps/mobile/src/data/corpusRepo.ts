@@ -228,3 +228,19 @@ export async function corpusMeta(): Promise<Record<string, string>> {
   const rows = await db.getAllAsync<{ k: string; v: string }>('SELECT k, v FROM meta');
   return Object.fromEntries(rows.map((r) => [r.k, r.v]));
 }
+
+/**
+ * The item bank for the adaptive level test: one row per word, spread across the
+ * whole difficulty range.
+ *
+ * Deliberately cheap — the test needs only an id and a difficulty to choose the
+ * next question, and the question itself is built on demand once chosen. Loading
+ * full entries for a bank the test will sample 15 items from would be waste.
+ */
+export async function levelTestPool(): Promise<Array<{ wordId: number; difficulty: number }>> {
+  const db = await openCorpus();
+  const rows = await db.getAllAsync<{ id: number; difficulty: number }>(
+    'SELECT id, difficulty FROM word ORDER BY difficulty ASC',
+  );
+  return rows.map((r) => ({ wordId: r.id, difficulty: r.difficulty }));
+}

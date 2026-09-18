@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { CEFR_LABEL, bandProgress, currentStreak } from '@vocab-u/core';
 import { Button, Text } from '@/design/components';
 import { useTheme } from '@/design/theme';
@@ -16,19 +17,26 @@ import { useLearner } from '@/features/progress/learnerStore';
  */
 export default function ProgressScreen() {
   const t = useTheme();
-  const { difficulty, cefr, takenAt, lastScore } = useLearner();
+  const router = useRouter();
+  const { difficulty, cefr, takenAt, lastScore, load } = useLearner();
   const [due, setDue] = useState(0);
   const [streak, setStreak] = useState(0);
   const [shelf, setShelf] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    void (async () => {
-      const now = Date.now();
-      setDue(await dueCount(now));
-      setStreak(currentStreak(await activeDayKeys(), now));
-      setShelf(await shelfCounts());
-    })();
-  }, []);
+  // Refetch on focus, not just on mount: coming back from the level test or a
+  // practice round must show the new numbers, and this screen is where someone
+  // looks precisely *because* they just finished something.
+  useFocusEffect(
+    useCallback(() => {
+      void (async () => {
+        const now = Date.now();
+        await load();
+        setDue(await dueCount(now));
+        setStreak(currentStreak(await activeDayKeys(), now));
+        setShelf(await shelfCounts());
+      })();
+    }, [load]),
+  );
 
   const band = bandProgress(difficulty);
 
@@ -81,9 +89,7 @@ export default function ProgressScreen() {
           <Button
             label={takenAt === null ? 'Take the level test' : 'Retake the level test'}
             kind="secondary"
-            onPress={() => {
-              /* level-test route lands in the next milestone */
-            }}
+            onPress={() => router.push('/level-test')}
           />
         </View>
 

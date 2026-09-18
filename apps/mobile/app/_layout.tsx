@@ -27,6 +27,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="play/[mode]" options={{ presentation: 'fullScreenModal' }} />
           <Stack.Screen name="play/results" options={{ presentation: 'fullScreenModal' }} />
+          <Stack.Screen name="level-test/index" options={{ presentation: 'fullScreenModal' }} />
         </Stack>
       </SafeAreaProvider>
     </GestureHandlerRootView>

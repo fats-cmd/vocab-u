@@ -151,6 +151,20 @@ export function recordResponse(state: TestState, item: TestItem, correct: boolea
   return { ...state, responses, theta, se: standardError(theta, responses), seen };
 }
 
+/**
+ * Mark an item as used without recording a response.
+ *
+ * Used when the corpus cannot build a fair question for the item the selector
+ * chose. A question that was never asked is not evidence about anyone's ability,
+ * so it must not reach `responses` — but it must reach `seen`, or the selector
+ * will keep choosing it forever.
+ */
+export function retireItem(state: TestState, wordId: number): TestState {
+  const seen = new Set(state.seen);
+  seen.add(wordId);
+  return { ...state, seen };
+}
+
 export function isComplete(state: TestState): boolean {
   const n = state.responses.length;
   if (n >= state.config.maxItems) return true;

@@ -7,6 +7,7 @@ import {
   isComplete,
   pCorrect,
   recordResponse,
+  retireItem,
   selectNextItem,
   startTest,
   THETA_MAX,
@@ -158,5 +159,39 @@ describe('adaptive test', () => {
 
   it('uses fewer items than the 30-item fixed form it replaces', () => {
     expect(simulate(0.5).itemsAsked).toBeLessThan(30);
+  });
+});
+
+describe('retireItem', () => {
+  it('marks an item used without treating it as evidence', () => {
+    // An item the corpus cannot ask fairly was never answered, so it must not
+    // move the ability estimate.
+    const state = startTest(null);
+    const retired = retireItem(state, pool[50]!.wordId);
+
+    expect(retired.seen.has(pool[50]!.wordId)).toBe(true);
+    expect(retired.responses).toHaveLength(0);
+    expect(retired.theta).toBe(state.theta);
+    expect(retired.se).toBe(state.se);
+  });
+
+  it('stops the selector returning the retired item', () => {
+    let state = startTest(null);
+    const first = selectNextItem(pool, state.theta, state.seen)!;
+    state = retireItem(state, first.wordId);
+    expect(selectNextItem(pool, state.theta, state.seen)?.wordId).not.toBe(first.wordId);
+  });
+
+  it('does not count toward the item budget', () => {
+    let state = startTest(null);
+    for (let i = 0; i < 5; i += 1) state = retireItem(state, pool[i]!.wordId);
+    expect(isComplete(state)).toBe(false);
+    expect(state.responses).toHaveLength(0);
+  });
+
+  it('does not mutate the state it is given', () => {
+    const state = startTest(null);
+    retireItem(state, 1);
+    expect(state.seen.size).toBe(0);
   });
 });

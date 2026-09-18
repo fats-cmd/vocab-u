@@ -18,6 +18,7 @@ import {
 import {
   distractorPool,
   entriesNearDifficulty,
+  entryById,
   glossesFor,
   synonymIdsFor,
   topicIdsFor,
@@ -94,4 +95,37 @@ export async function buildItems(options: BuildOptions): Promise<GameItem[]> {
   }
 
   return collected;
+}
+
+/**
+ * Build a question for one specific word.
+ *
+ * The adaptive test picks *which* word to ask by ability, then asks for a
+ * question about exactly that word — it cannot accept a substitute, because
+ * substituting changes the difficulty it just chose. Returns null if the corpus
+ * cannot support a fair question for it, and the caller moves to the next-best
+ * item rather than asking an unfair one.
+ */
+export async function buildItemForWord(
+  wordId: number,
+  optionCount: number,
+  rng: Rng,
+  types: GameType[] = ['guess-word', 'meaning-match'],
+): Promise<GameItem | null> {
+  const entry = await entryById(wordId);
+  if (!entry) return null;
+
+  const [pool, synonymIds, fields] = await Promise.all([
+    distractorPool(entry.word.pos, entry.word.difficulty, entry.word.id),
+    synonymIdsFor(entry.word.id),
+    topicIdsFor(entry.word.id),
+  ]);
+  const glossMap = await glossesFor(pool.map((p) => p.word.id));
+  const input = { entry, pool, synonymIds, fields, optionCount, rng };
+
+  for (const type of shuffle(types, rng)) {
+    const item = GENERATORS[type](input, (id) => glossMap.get(id) ?? null);
+    if (item) return item;
+  }
+  return null;
 }
