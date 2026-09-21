@@ -42,6 +42,14 @@ jobs:
       - name: Build corpus
         run: pnpm corpus:build
 
+      # The committed vocab.db must be exactly what the gate emits. The build is
+      # reproducible, so this is a byte comparison: it catches a database edited
+      # by hand, or committed from data that never passed validation.
+      - name: Committed corpus matches a fresh build
+        run: |
+          pnpm prepare:assets
+          git diff --exit-code apps/mobile/assets/corpus/vocab.db
+
       - name: Upload corpus
         uses: actions/upload-artifact@v4
         with:

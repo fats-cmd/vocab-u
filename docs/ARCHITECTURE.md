@@ -104,11 +104,23 @@ Two databases. This separation is the most important structural decision in the 
 Read-only is not incidental — it is what lets the same file work on every
 platform, including web, where it is fetched and deserialised into memory.
 
-It is a build artifact, never committed: a checked-in database could carry
-content that never passed the validation gate, which would make the gate
-decorative. `apps/mobile/scripts/ensure-corpus.cjs` builds it from Metro's config
-on the first bundle, so clone-install-run works on every platform with no
-separate step to remember.
+**It is committed, and CI proves it is honest.** Leaving it out meant a fresh
+clone could not bundle at all — a static `require()` of a missing asset fails
+with a message that says nothing about corpora. That is a worse problem than a
+92 KB binary in git.
+
+The obvious objection is that a committed database could carry content that never
+passed the validation gate, making the gate decorative. So the build is
+**reproducible** — same inputs, same bytes, no timestamp — and CI rebuilds it and
+fails if the committed copy differs. The gate still decides what ships.
+
+Two belts: `apps/mobile/scripts/ensure-corpus.cjs` still builds the corpus from
+Metro's config if it is ever absent, which covers someone editing
+`tools/corpus/data/` without rebuilding.
+
+Revisit committing it when the corpus passes roughly 10 MB — at that point git
+history growth starts to cost more than the convenience is worth, and a release
+asset fetched at build time becomes the better trade.
 
 
 Shipped as an asset, opened read-only, replaced wholesale on content updates.

@@ -191,9 +191,12 @@ export function emit(
   }
 
   insertMeta.run('corpus_version', corpusVersion);
-  insertMeta.run('built_at', new Date().toISOString());
   insertMeta.run('word_count', String(entries.length));
   insertMeta.run('schema_version', '1');
+  // Deliberately no build timestamp. The same inputs must produce the same
+  // bytes: it is what lets CI verify the committed database really is what the
+  // validation gate emits, and it is a precondition for the reproducible
+  // Android builds F-Droid requires.
 
   db.exec('COMMIT');
   db.exec('VACUUM');

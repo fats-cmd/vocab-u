@@ -6,7 +6,10 @@ web-build/
 .DS_Store
 tools/corpus/.cache/
 tools/corpus/out/
-apps/mobile/assets/corpus/*.db
+# The corpus IS committed. It is a build artifact, but an app that cannot
+# bundle from a clean clone is a worse problem than a 92 KB binary in git, and
+# CI rebuilds it and fails if the committed copy differs — so the validation
+# gate still decides what ships.
 .env*
 !.env.example
 apps/mobile/dist/
